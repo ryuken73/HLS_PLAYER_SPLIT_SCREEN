@@ -44,6 +44,7 @@ function App() {
   const [modalPlayer, setModalPlayer] = React.useState(null);
   const [gridDimension, setGridDimension] = React.useState(INITIAL_GRID_DIMENSION);
   const [autoPlay, setAutoPlay] = React.useState(false);
+  const [cctvsNotSelectedArray, setCCTVsNotSelectedArray] = React.useState(cctvs);
   const [cctvsSelectedArray, setCCTVsSelectedAray] = React.useState([]);
   const [enableOverlayModal, setEnableOverlayModal] = React.useState(false);
   const [overlayContentModal, setOverContentlayModal] = React.useState('');
@@ -113,8 +114,11 @@ function App() {
         </ModalBox>
         <ConfigDialog 
           open={dialogOpen} 
-          cctvs={cctvs}
+          // cctvs={cctvs}
+          cctvsNotSelected={cctvsNotSelectedArray}
           cctvsSelected={cctvsSelectedArray}
+          setCCTVsSelectedAray={setCCTVsSelectedAray}
+          setCCTVsNotSelectedArray={setCCTVsNotSelectedArray}
           setDialogOpen={setDialogOpen}
         ></ConfigDialog>
       </header>

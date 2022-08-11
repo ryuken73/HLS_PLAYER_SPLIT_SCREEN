@@ -38,6 +38,7 @@ const Column = props => {
     // },[cctvIds, cctvs])
     const {columnName, columnItems} = props;
     const onClickLink = () => {};
+    console.log(columnName, columnItems)
 
     // const onClickLink = React.useCallback(() => {
     //     const newColumnData = {...columnData};

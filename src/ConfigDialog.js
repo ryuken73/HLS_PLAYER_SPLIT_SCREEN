@@ -20,16 +20,19 @@ const columnNames =  ['dragFrom', 'dropOn'];
 const ConfigDialog = props => {
     const {
         open=false,
-        cctvs=[],
+        // cctvs=[],
+        cctvsNotSelected=[],
         cctvsSelected=[],
+        setCCTVsSelectedAray,
+        setCCTVsNotSelectedArray,
         setDialogOpen=()=>{},
 
-        optionTitle="Filter CCTVs",
-        columnData={},
+        optionTitle="Select CCTVs",
+        // columnData={},
         // columnOrder=[],
-        setColumnData=()=>{},
-        groupByArea=true,
-        displayGrid=false,
+        // setColumnData=()=>{},
+        // groupByArea=true,
+        displayGrid=true,
         gridDimension=2,
         autoInterval=10,
         // setGroupByArea=()=>{},
@@ -40,28 +43,30 @@ const ConfigDialog = props => {
         // cctvsInDropOn=[]
     } = props;
 
+    // const [columnItems, setColumnItems] = React.useState({});
+    // React.useEffect(() => {
+    //     setColumnItems({
+    //         'dragFrom': [...cctvsNotSelected],
+    //         'dropOn': [...cctvsSelected]
+    //     })
+    // }, [cctvsNotSelected, cctvsSelected])
 
+    const methods = React.useMemo(() => {
+        return {
+            dragFrom: setCCTVsNotSelectedArray,
+            dropOn: setCCTVsSelectedAray
+        }
+    },[cctvsNotSelected, cctvsSelected])
 
-    const [cctvsFrom, setCCTVsFrom] = React.useState([]);
-    const [columnItems, setColumnItems] = React.useState({});
-    React.useEffect(() => {
-        const cctvNotSelected = cctvs.reduce((acct, cctv) => {
-            const isSelected = cctvsSelected.some(selected => {
-                return selected.cctvId === cctv.cctvId;
-            })
-            if(!isSelected){
-                return [...acct, cctv];
-            }
-            return [...acct];
-        }, [])
-        // setCCTVsFrom(cctvNotSelected);
-        setColumnItems({
-            'dragFrom': [...cctvNotSelected],
-            'dropOn': [...cctvsSelected]
-        })
-    }, [cctvs, cctvsSelected])
+    const columnItems = React.useMemo(() => {
+        return {
+            dragFrom: cctvsNotSelected,
+            dropOn: cctvsSelected
+        }
+    },[cctvsNotSelected, cctvsSelected])
 
-    console.log('re-render filter :', preload)
+    console.log('re-render filter :', columnItems, preload)
+
     const onCloseFilterDialog = () => {
         setDialogOpen(false);
     }
@@ -72,67 +77,44 @@ const ConfigDialog = props => {
         const NOT_MOVED = !MOVE_OUTSIDE && destination.droppableId === source.droppableId && destination.index === source.index;
         if(MOVE_OUTSIDE || NOT_MOVED) return;
 
+        const sourceIndex = source.index;
+        const targetIndex = destination.index;
+
+        const sourceArray = columnItems[source.droppableId];
+        const targetArray = columnItems[destination.droppableId];
+
+        const setSourceMethod = methods[source.droppableId];
+        const setTargetMethod = methods[destination.droppableId];
+
         const DROP_IN_SAME_COLUMN = source.droppableId ===  destination.droppableId;
         if(DROP_IN_SAME_COLUMN){
             // exchange cctvIds;
-            const targetColumn = columnData[source.droppableId]
-            const sourceIndex = source.index;
-            const destinationIndex = destination.index;
-            const newCCTVIds = moveTo(targetColumn.cctvIds).fromIndex(sourceIndex).toIndex(destinationIndex);
-            const newTargetColumn = {
-                ...targetColumn,
-                cctvIds: newCCTVIds
-            }
-            setColumnData({
-                ...columnData,
-                [source.droppableId]:{
-                    ...newTargetColumn
-                }
-            })
+            const newArray = moveTo(targetArray).fromIndex(sourceIndex).toIndex(targetIndex);
+            setSourceMethod([...newArray]);
         }
-        // console.log('###',result, source.droppableId, source.index, destination.droppableId, destination.index);
+
         const DROP_IN_OTHER_COLUMN = source.droppableId !==  destination.droppableId;
         if(DROP_IN_OTHER_COLUMN){
-            const sourceColumn = columnData[source.droppableId];
-            const targetColumn = columnData[destination.droppableId];
-            const sourceIndex = source.index;
-            const targetIndex = destination.index;
-            const sourceCCTVId = sourceColumn.cctvIds[sourceIndex];
-            const newSourceCCTVIds = remove(sourceColumn.cctvIds).fromIndex(sourceIndex);
-            const newTargetCCTVIds = add(targetColumn.cctvIds).toIndex(targetIndex).value(sourceCCTVId);
-            const newSourceColumn = {
-                ...sourceColumn,
-                cctvIds: newSourceCCTVIds
-            }
-            const newTargetColumn = {
-                ...targetColumn,
-                cctvIds: newTargetCCTVIds
-            }
-            setColumnData({
-                ...columnData,
-                [source.droppableId]:{
-                    ...newSourceColumn
-                },
-                [destination.droppableId]:{
-                    ...newTargetColumn
-                }
-            })
+            const sourceCCTV = sourceArray[sourceIndex];
+            const newSourceArray = remove(sourceArray).fromIndex(sourceIndex);
+            const newTargetArray = add(targetArray).toIndex(targetIndex).value(sourceCCTV);
+            setSourceMethod([...newSourceArray]);
+            setTargetMethod([...newTargetArray]);
         }
+    },[columnItems, methods])
 
-    },[columnData])
+    // const handleChange = React.useCallback(event => {
+    //     setOptionsNSave('groupByArea', event.target.checked);
+    // },[])
 
-    const handleChange = React.useCallback(event => {
-        setOptionsNSave('groupByArea', event.target.checked);
-    },[])
+    // const handleChangePreload = React.useCallback(event => {
+    //     console.log(event.target.checked)
+    //     setOptionsNSave('preload', event.target.checked)
+    // },[])
 
-    const handleChangePreload = React.useCallback(event => {
-        console.log(event.target.checked)
-        setOptionsNSave('preload', event.target.checked)
-    },[])
-
-    const handleChangeDisplayGrid = React.useCallback(event => {
-        setOptionsNSave('displayGrid', event.target.checked)
-    },[])
+    // const handleChangeDisplayGrid = React.useCallback(event => {
+    //     setOptionsNSave('displayGrid', event.target.checked)
+    // },[])
 
     const handleChangeGridDimension = React.useCallback(event => {
         setOptionsNSave('gridDimension', event.target.value)
@@ -157,7 +139,7 @@ const ConfigDialog = props => {
                     <Box display="flex" flexDirection="row">
                         {optionTitle}
                         <Box style={{marginLeft:'auto'}}>
-                            {!groupByArea && !displayGrid &&
+                            {/* {!groupByArea && !displayGrid &&
                             <FormControlLabel 
                                 control={<Checkbox color="primary" size="small" checked={preload} onChange={handleChangePreload} />} 
                                 label="미리보기" 
@@ -172,7 +154,7 @@ const ConfigDialog = props => {
                             <FormControlLabel 
                                 control={<Checkbox color="primary" size="small" checked={displayGrid} onChange={handleChangeDisplayGrid} />} 
                                 label="분할화면" 
-                            />
+                            /> */}
                         </Box>
                         {displayGrid && 
                             <RadioGroup
