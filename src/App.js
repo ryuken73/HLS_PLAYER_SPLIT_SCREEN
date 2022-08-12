@@ -10,7 +10,7 @@ import useLocalStorage from './hooks/useLocalStorage';
  
 const mirrorModalPlayer = (playerNode, modalPlayer) => {
   const videoElement =  playerNode.querySelector('video');
-  console.log('### videoElement:', videoElement);
+  console.log('### videoElement:', videoElement, modalPlayer);
   const mediaStream = videoElement.captureStream();
   const modalVideoPlayer = modalPlayer.tech().el();
   modalVideoPlayer.srcObject = null;
@@ -19,9 +19,9 @@ const mirrorModalPlayer = (playerNode, modalPlayer) => {
 
 const cctvs = [
     {num:1,cctvId:9965,url:"https://topiscctv1.eseoul.go.kr/sd1/ch20.stream/playlist.m3u8",title:"서울 마포구 성산교",lat:37.56269,lng:126.899925, mapLevel:8},
-    {num:2,cctvId:9966,title:"서울 노원구 중랑천",lat:37.63238,lng:127.0626972, mapLevel:8},
-    {num:3,cctvId:9967,title:"부산 동래구 세병교(온천천)",lat:35.19768,lng:129.0825083, mapLevel:10},
-    {num:5,cctvId:9969,title:"대구 동구 신천",lat:35.87561,lng:128.6097306},
+    {num:2,cctvId:9966,url:"https://topiscctv1.eseoul.go.kr/sd1/ch141.stream/playlist.m3u8",title:"서울 노원구 중랑천",lat:37.63238,lng:127.0626972, mapLevel:8},
+    {num:3,cctvId:9967,url:"https://topiscctv1.eseoul.go.kr/sd1/ch142.stream/playlist.m3u8",title:"부산 동래구 세병교(온천천)",lat:35.19768,lng:129.0825083, mapLevel:10},
+    {num:5,cctvId:9969,url:"http://cctvsec.ktict.co.kr:8081/openapix004/2413/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9OC8xMi8yMDIyIDI6NDA6NDAgUE0maGFzaF92YWx1ZT1JYmozVkltc3V4a2RRQm5qREdObHpBPT0mdmFsaWRtaW51dGVzPTE1NjAmaWQ9NGU3YjFhOGVmZGNhNDZlMmEwYTJhZTY2NWRlMzE3MjMtMTY2MDMxODg0MDY3MS0yNDEzJmNoZWNraXA9dHJ1ZQ==",title:"대구 동구 신천",lat:35.87561,lng:128.6097306},
     {num:6,cctvId:9970,title:"대전 유성구 갑천",lat:36.37241,lng:127.37385},
     {num:17,cctvId:9981,title:"인천 중구 연안부두",lat:37.45414,lng:126.5986194, mapLevel:10},
     {num:8,cctvId:9972,title:"경기도 가평군 가평2교(북한강)",lat:37.83101,lng:127.5228861},
@@ -89,39 +89,39 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-         <Box width="100%" height="100%">
-        <GridVideos
-          setPlayer={setLeftSmallPlayerRef.current}
-          cctvsSelected={cctvsSelectedArray}
-          preLoadMapRef={preLoadMapRef}
-          maximizeGrid={maximizeGrid}
-          toggleAutoPlay={toggleAutoPlay}
-          autoPlay={autoPlay}
-          gridDimension={gridDimension}
-          enableOverlayGlobal={enableOverlayGlobal}
-          toggleOverlayGlobal={toggleOverlayGlobal}
-        ></GridVideos>
-        <ModalBox open={modalOpen} keepMounted={true} autoPlay={autoPlay} setOpen={setModalOpen} contentWidth="80%" contentHeight="auto">
-          <HLSPlayer 
-            fill={true}
-            responsive={true}
-            setPlayer={setModalPlayer}
-            aspectRatio={"16:9"}
-            enableOverlay={enableOverlayModal}
-            overlayContent={overlayContentModal}
-            overlayBig={true}
-            overlayModal={true}
-          ></HLSPlayer>
-        </ModalBox>
-        <ConfigDialog 
-          open={dialogOpen} 
-          // cctvs={cctvs}
-          cctvsNotSelected={cctvsNotSelectedArray}
-          cctvsSelected={cctvsSelectedArray}
-          setCCTVsSelectedAray={setCCTVsSelectedAray}
-          setCCTVsNotSelectedArray={setCCTVsNotSelectedArray}
-          setDialogOpen={setDialogOpen}
-        ></ConfigDialog>
+        <Box width="100%" height="100%">
+          <GridVideos
+            setPlayer={setLeftSmallPlayerRef.current}
+            cctvsSelected={cctvsSelectedArray}
+            preLoadMapRef={preLoadMapRef}
+            maximizeGrid={maximizeGrid}
+            toggleAutoPlay={toggleAutoPlay}
+            autoPlay={autoPlay}
+            gridDimension={gridDimension}
+            enableOverlayGlobal={enableOverlayGlobal}
+            toggleOverlayGlobal={toggleOverlayGlobal}
+          ></GridVideos>
+          <ModalBox open={modalOpen} keepMounted={true} autoPlay={autoPlay} setOpen={setModalOpen} contentWidth="80%" contentHeight="auto">
+            <HLSPlayer 
+              fill={true}
+              responsive={true}
+              setPlayer={setModalPlayer}
+              aspectRatio={"16:9"}
+              enableOverlay={enableOverlayModal}
+              overlayContent={overlayContentModal}
+              overlayBig={true}
+              overlayModal={true}
+            ></HLSPlayer>
+          </ModalBox>
+          <ConfigDialog 
+            open={dialogOpen} 
+            // cctvs={cctvs}
+            cctvsNotSelected={cctvsNotSelectedArray}
+            cctvsSelected={cctvsSelectedArray}
+            setCCTVsSelectedAray={setCCTVsSelectedAray}
+            setCCTVsNotSelectedArray={setCCTVsNotSelectedArray}
+            setDialogOpen={setDialogOpen}
+          ></ConfigDialog>
         </Box>
       </header>
     </div>

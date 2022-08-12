@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box'
 // import { makeStyles } from '@mui/material/styles';
+import styled from 'styled-components';
 import Fade from '@mui/material/Fade';
 import Zoom from '@mui/material/Zoom';
 import Grow from '@mui/material/Grow';
@@ -18,6 +19,17 @@ import Grow from '@mui/material/Grow';
 //     padding: theme.spacing(0.5),
 //   }),
 // }));
+
+const ModalContainer = styled.div`
+  margin: auto;
+  height: ${props => props.contentHeight || "80%"};
+  width: ${props => props.contentWidth || "90%"};
+  background-color: ${props => props.autoPlay ? "maroon" : "white"};
+  border: 2px solid #000;
+  padding: 5px;
+  /* boxShadow: theme.shadows[100], */
+  /* padding: theme.spacing(0.5), */
+`
 
 function SimpleModal(props) {
   // const classes = useStyles(props);
@@ -43,9 +55,11 @@ function SimpleModal(props) {
         {/* <Fade in={open} timeout={300}>  */}
           <Box onClick={handleClose} display="flex" height="100%">
             {/* <Box className={classes.paper}> */}
-            <Box>
-              {children}
-            </Box>
+            <ModalContainer {...props}>
+              <Box>
+                {children}
+              </Box>
+            </ModalContainer>
           </Box>
         {/* </Fade> */}
         {/* </Grow> */}
