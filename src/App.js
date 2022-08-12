@@ -7,8 +7,6 @@ import ConfigDialog from './ConfigDialog';
 import Box from '@mui/material/Box';
 import { useHotkeys } from 'react-hotkeys-hook';
 import useLocalStorage from './hooks/useLocalStorage';
-
-
  
 const mirrorModalPlayer = (playerNode, modalPlayer) => {
   const videoElement =  playerNode.querySelector('video');
@@ -20,7 +18,7 @@ const mirrorModalPlayer = (playerNode, modalPlayer) => {
 }
 
 const cctvs = [
-    {num:1,cctvId:9965,title:"서울 마포구 성산교",lat:37.56269,lng:126.899925, mapLevel:8},
+    {num:1,cctvId:9965,url:"https://topiscctv1.eseoul.go.kr/sd1/ch20.stream/playlist.m3u8",title:"서울 마포구 성산교",lat:37.56269,lng:126.899925, mapLevel:8},
     {num:2,cctvId:9966,title:"서울 노원구 중랑천",lat:37.63238,lng:127.0626972, mapLevel:8},
     {num:3,cctvId:9967,title:"부산 동래구 세병교(온천천)",lat:35.19768,lng:129.0825083, mapLevel:10},
     {num:5,cctvId:9969,title:"대구 동구 신천",lat:35.87561,lng:128.6097306},
@@ -53,6 +51,7 @@ function App() {
   useHotkeys('c', () => setDialogOpen(true));
   const autoPlayIndexRef = React.useRef(0);
   const preLoadMapRef = React.useRef(new Map());
+  const setLeftSmallPlayerRef = React.useRef(()=>{});
 
   const maximizeGrid = React.useCallback(gridNum => {
     const totalGridNum = gridDimension * gridDimension;
@@ -90,7 +89,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+         <Box width="100%" height="100%">
         <GridVideos
+          setPlayer={setLeftSmallPlayerRef.current}
           cctvsSelected={cctvsSelectedArray}
           preLoadMapRef={preLoadMapRef}
           maximizeGrid={maximizeGrid}
@@ -121,6 +122,7 @@ function App() {
           setCCTVsNotSelectedArray={setCCTVsNotSelectedArray}
           setDialogOpen={setDialogOpen}
         ></ConfigDialog>
+        </Box>
       </header>
     </div>
   );
