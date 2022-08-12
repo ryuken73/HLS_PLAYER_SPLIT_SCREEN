@@ -16,8 +16,6 @@
     "react-hotkeys-hook": "^3.4.7",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",
-    "video.js": "^7.20.1",
-    "videojs-overlay": "^2.1.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

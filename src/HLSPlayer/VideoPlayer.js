@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Controls from './Controls.json';
-import videojs from 'video.js';
-import overlay from 'videojs-overlay';
 
 class VideoPlayer extends Component {
     playerId = `video-player-${Date.now() + (Math.random()*10000).toFixed(0)}`
     player = {};
     componentDidMount() {
-        // console.log('player did mount:', this.playerId)
+        console.log('player did mount:', this.playerId)
         this.init_player(this.props);
         this.init_player_events(this.props);
     }
@@ -23,13 +21,14 @@ class VideoPlayer extends Component {
 
     componentWillUnmount() {
         console.log('player will umount:', this.playerId, this.player.isDisposed())
-        if (this.player.isDisposed() === false) this.player.dispose();
+        // document.querySelector(`#${this.playerId}`).remove();
+        // if (this.player.isDisposed() === false) this.player.dispose();
         
     }
 
     init_player(props) {
         try {
-            // console.log('#### init_player: ',props,this.playerId, this.player.isDisposed &&  this.player.isDisposed() , document.querySelector(`#${this.playerId}`))
+            console.log('#### init_player: ',props,this.playerId, this.player.isDisposed &&  this.player.isDisposed() , document.querySelector(`#${this.playerId}`))
             const playerOptions = this.generate_player_options(props);
             const {
                 enableOverlay=false, 
@@ -41,10 +40,10 @@ class VideoPlayer extends Component {
                 startSecondsOffset=0,
             } = props;
             if(this.player.isDisposed == undefined || this.player.isDisposed &&  this.player.isDisposed()){
-                // console.log('initialize player:', this.playerId);
-                this.player = videojs(document.querySelector(`#${this.playerId}`), playerOptions);
+                console.log('initialize player:', this.playerId, this.player);
+                this.player = window.videojs(document.querySelector(`#${this.playerId}`), playerOptions);
             }
-            console.log('#######', enableOverlay)
+            console.log('#######', enableOverlay, this.player)
             if(enableOverlay){
                 this.player.overlay(
                     {
