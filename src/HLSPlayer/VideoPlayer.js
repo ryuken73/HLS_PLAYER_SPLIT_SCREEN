@@ -22,7 +22,7 @@ class VideoPlayer extends Component {
     componentWillUnmount() {
         console.log('player will umount:', this.playerId, this.player.isDisposed())
         // document.querySelector(`#${this.playerId}`).remove();
-        // if (this.player.isDisposed() === false) this.player.dispose();
+        if (this.player.isDisposed() === false) this.player.dispose();
         
     }
 
