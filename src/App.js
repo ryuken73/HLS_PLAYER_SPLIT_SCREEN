@@ -32,7 +32,8 @@ const cctvs = [
 
 function App() {
   const [savedOptions, saveOptions] = useLocalStorage('cctvOptions',{});
-  // const [cctvs, saveCCTVs] = useLocalStorage('cctvSaved',[]);
+  const [selectedSaved, saveSelectedCCTVs] = useLocalStorage('selectedSavedCCTVs',[]);
+  const [notSelectedSaved, saveNotSelectedCCTVs] = useLocalStorage('notSelectedSavedCCTVs',[]);
   const INITIAL_DISPLAY_GRID = savedOptions.displayGrid === undefined ? false : savedOptions.displayGrid;
   const INITIAL_GRID_DIMENSION = savedOptions.gridDimension === undefined ? 2 : savedOptions.gridDimension;
   const INITIAL_AUTO_INTERVAL = savedOptions.autoInterval === undefined ? 2 : savedOptions.autoInterval;
@@ -42,8 +43,8 @@ function App() {
   const [modalPlayer, setModalPlayer] = React.useState(null);
   const [gridDimension, setGridDimension] = React.useState(INITIAL_GRID_DIMENSION);
   const [autoPlay, setAutoPlay] = React.useState(false);
-  const [cctvsNotSelectedArray, setCCTVsNotSelectedArray] = React.useState(cctvs);
-  const [cctvsSelectedArray, setCCTVsSelectedAray] = React.useState([]);
+  const [cctvsNotSelectedArray, setCCTVsNotSelectedArray] = React.useState(notSelectedSaved);
+  const [cctvsSelectedArray, setCCTVsSelectedAray] = React.useState(selectedSaved);
   const [enableOverlayModal, setEnableOverlayModal] = React.useState(false);
   const [overlayContentModal, setOverContentlayModal] = React.useState('');
   const [enableOverlayGlobal, setEnableOverlayGlobal] = React.useState(true);
@@ -85,6 +86,15 @@ function App() {
     })
   },[modalOpen, setEnableOverlayGlobal])
 
+  const setCCTVsSelectedArrayNSave = React.useCallback((cctvsArray) =>{
+    setCCTVsSelectedAray(cctvsArray);
+    saveSelectedCCTVs(cctvsArray);
+  },[saveSelectedCCTVs])
+
+  const setCCTVsNotSelectedArrayNSave = React.useCallback((cctvsArray) => {
+    setCCTVsNotSelectedArray(cctvsArray);
+    saveNotSelectedCCTVs(cctvsArray);
+  },[saveNotSelectedCCTVs])
 
   return (
     <div className="App">
@@ -118,8 +128,8 @@ function App() {
             // cctvs={cctvs}
             cctvsNotSelected={cctvsNotSelectedArray}
             cctvsSelected={cctvsSelectedArray}
-            setCCTVsSelectedAray={setCCTVsSelectedAray}
-            setCCTVsNotSelectedArray={setCCTVsNotSelectedArray}
+            setCCTVsSelectedAray={setCCTVsSelectedArrayNSave}
+            setCCTVsNotSelectedArray={setCCTVsNotSelectedArrayNSave}
             setDialogOpen={setDialogOpen}
           ></ConfigDialog>
         </Box>
