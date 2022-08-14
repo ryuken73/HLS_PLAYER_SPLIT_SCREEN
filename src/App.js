@@ -30,19 +30,23 @@ const cctvs = [
     {num:12,cctvId:9976,title:"충남 공주시 금강",lat:36.47092,lng:127.1263889},
 ]
 
+const KEY_OPTIONS = 'hlsCCTVOptions';
+const KEY_SELECT_SAVED = 'selectedSavedCCTVs';
+const KEY_NOT_SELECT_SAVED = 'notSelectedSavedCCTVs';
+
 function App() {
-  const [savedOptions, saveOptions] = useLocalStorage('cctvOptions',{});
-  const [selectedSaved, saveSelectedCCTVs] = useLocalStorage('selectedSavedCCTVs',[]);
-  const [notSelectedSaved, saveNotSelectedCCTVs] = useLocalStorage('notSelectedSavedCCTVs',[]);
-  const INITIAL_DISPLAY_GRID = savedOptions.displayGrid === undefined ? false : savedOptions.displayGrid;
+  const [savedOptions, saveOptions] = useLocalStorage(KEY_OPTIONS,{});
+  const [selectedSaved, saveSelectedCCTVs] = useLocalStorage(KEY_SELECT_SAVED,[]);
+  const [notSelectedSaved, saveNotSelectedCCTVs] = useLocalStorage(KEY_NOT_SELECT_SAVED,[]);
   const INITIAL_GRID_DIMENSION = savedOptions.gridDimension === undefined ? 2 : savedOptions.gridDimension;
-  const INITIAL_AUTO_INTERVAL = savedOptions.autoInterval === undefined ? 2 : savedOptions.autoInterval;
+  const INITIAL_AUTO_INTERVAL = savedOptions.autoInterval === undefined ? 10 : savedOptions.autoInterval;
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [modalPlayer, setModalPlayer] = React.useState(null);
   const [gridDimension, setGridDimension] = React.useState(INITIAL_GRID_DIMENSION);
   const [autoPlay, setAutoPlay] = React.useState(false);
+  const [autoInterval, setAutoInterval] = React.useState(INITIAL_AUTO_INTERVAL);
   const [cctvsNotSelectedArray, setCCTVsNotSelectedArray] = React.useState(notSelectedSaved);
   const [cctvsSelectedArray, setCCTVsSelectedAray] = React.useState(selectedSaved);
   const [enableOverlayModal, setEnableOverlayModal] = React.useState(false);
@@ -71,6 +75,24 @@ function App() {
     autoPlayIndexRef.current = gridNum;
   },[modalPlayer, gridDimension, cctvsSelectedArray, enableOverlayGlobal])
 
+    React.useEffect(() => {
+    let timer;
+    if(autoPlay){
+      document.title=`CCTV[auto - every ${autoInterval}s]`
+      const firstIndex = autoPlayIndexRef.current;
+      maximizeGrid(firstIndex);
+      timer = setInterval(() => {
+        const nextIndex = (autoPlayIndexRef.current + 1) % 9;
+        maximizeGrid(nextIndex);
+      },autoInterval*1000)
+    } else {
+      document.title="CCTV"
+    }
+    return () => {
+      if(timer) clearInterval(timer);
+    }
+  },[autoPlay, maximizeGrid])
+
   const toggleAutoPlay = React.useCallback(() => {
     setAutoPlay(autoPlay => {
       return !autoPlay;
@@ -95,6 +117,16 @@ function App() {
     setCCTVsNotSelectedArray(cctvsArray);
     saveNotSelectedCCTVs(cctvsArray);
   },[saveNotSelectedCCTVs])
+
+  const setOptionsNSave = React.useCallback((key, value) => {
+    key === 'gridDimension' && setGridDimension(value);
+    key === 'autoInterval' && setAutoInterval(value);
+    const options = {
+      ...savedOptions,
+      [key]: value
+    }
+    saveOptions(options)    
+  },[saveOptions, savedOptions])
 
   return (
     <div className="App">
@@ -130,6 +162,9 @@ function App() {
             cctvsSelected={cctvsSelectedArray}
             setCCTVsSelectedAray={setCCTVsSelectedArrayNSave}
             setCCTVsNotSelectedArray={setCCTVsNotSelectedArrayNSave}
+            setOptionsNSave={setOptionsNSave}
+            gridDimension={gridDimension}
+            autoInterval={autoInterval}
             setDialogOpen={setDialogOpen}
           ></ConfigDialog>
         </Box>

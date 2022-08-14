@@ -118,11 +118,11 @@ const ConfigDialog = props => {
 
     const handleChangeGridDimension = React.useCallback(event => {
         setOptionsNSave('gridDimension', event.target.value)
-    },[])
+    },[setOptionsNSave])
 
     const handleChangeAutoInterval = React.useCallback(event => {
         setOptionsNSave('autoInterval', event.target.value)
-    },[])
+    },[setOptionsNSave])
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
