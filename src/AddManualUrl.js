@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 import HLSPlayer from './HLSPlayer';
+import {replace} from './lib/arrayUtil';
 
 const Container = styled.div`
   /* margin-left: 15px; */
@@ -22,7 +23,13 @@ const SubContainer = styled.div`
 
 
 function AddManualUrl(props) {
-  const {allCCTVs, checkedCCTVId, setCCTVsNotSelectedArray} = props;
+  const {
+    allCCTVs, 
+    checkedCCTVId, 
+    checkedInSelected, 
+    setCCTVsNotSelectedArray, 
+    setCCTVsSelectedArray
+  } = props;
   const [url, setUrl] = React.useState('');
   const [title, setTitle] = React.useState('');
   // const titleRef = React.useRef('');
@@ -30,10 +37,12 @@ function AddManualUrl(props) {
   React.useEffect(() => {
     if(checkedCCTVId){
       const checkedCCTV = allCCTVs.find(cctv => cctv.cctvId === checkedCCTVId);
-      setUrl(checkedCCTV.url || '');
-      setTitle(checkedCCTV.title || '');
+      if(checkedCCTV){
+        setUrl(checkedCCTV.url || 'https://localhost');
+        setTitle(checkedCCTV.title || '');
+      }
     } else {
-      setUrl('');
+      setUrl('https://-');
       setTitle('');
     }
   },[allCCTVs, checkedCCTVId])
@@ -57,10 +66,33 @@ function AddManualUrl(props) {
   },[])
 
   const onClickAdd = React.useCallback(() => {
+    if(checkedCCTVId){
+      if(checkedInSelected){
+        setCCTVsSelectedArray(cctvs => {
+          const targetIndex = cctvs.findIndex(cctv => cctv.cctvId === checkedCCTVId);
+          return replace(cctvs).index(targetIndex).value({
+            ...cctvs[targetIndex],
+            url,
+            title
+          })
+        })
+        return;
+      } else {
+        setCCTVsNotSelectedArray(cctvs => {
+          const targetIndex = cctvs.findIndex(cctv => cctv.cctvId === checkedCCTVId);
+          return replace(cctvs).index(targetIndex).value({
+            ...cctvs[targetIndex],
+            url,
+            title
+          })
+        })
+        return;
+      }
+    }
     const ALREADY_INDEX = allCCTVs.findIndex(cctv => cctv.url === url);
     if(ALREADY_INDEX >= 0){
       const alreadyCCTV = allCCTVs[ALREADY_INDEX];
-      alert(`Url already exists! - [${alreadyCCTV.title}]`);
+      alert(`URL already exists! - [${alreadyCCTV.title}]`);
       return;
     }
     const newCCTV = {
@@ -72,7 +104,7 @@ function AddManualUrl(props) {
     setCCTVsNotSelectedArray(cctvs => {
       return [...cctvs, newCCTV]
     })
-  },[allCCTVs, url, title, setCCTVsNotSelectedArray])
+  },[checkedCCTVId, allCCTVs, url, title, setCCTVsNotSelectedArray, checkedInSelected, setCCTVsSelectedArray])
 
   return (
     <Container>
@@ -88,7 +120,7 @@ function AddManualUrl(props) {
         <SubContainer>
           <TextField onChange={setTitleValue} value={title} label="Title" variant="outlined" size="small"></TextField>
           <TextField fullWidth onChange={onChangeUrl} value={url} label="Url" variant="outlined" size="small"></TextField>
-          <Button onClick={onClickAdd}>add</Button>
+          <Button onClick={onClickAdd}>{checkedCCTVId ? "Update":"Add"}</Button>
         </SubContainer>
     </Container>
   )

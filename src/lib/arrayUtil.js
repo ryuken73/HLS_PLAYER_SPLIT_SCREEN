@@ -19,6 +19,18 @@ export const exchange = array => {
     } 
 }
 
+export const replace = array => {
+    return {
+        index: index => {
+            return {
+                value: value => {
+                    return [...array.slice(0, index), value, ...array.slice(index+1)]
+                }
+            }
+        }
+    }
+}
+
 export const remove = array => {
     const MIN_INDEX = 0;
     const MAX_INDEX = array.length - 1;

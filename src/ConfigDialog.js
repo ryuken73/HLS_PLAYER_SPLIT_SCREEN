@@ -53,6 +53,7 @@ const ConfigDialog = props => {
     //     })
     // }, [cctvsNotSelected, cctvsSelected])
 
+    const checkedInSelected = checkedCCTVId && cctvsSelected.some(cctv => cctv.cctvId === checkedCCTVId);
     const allCCTVs = React.useMemo(() => {
         return [...cctvsNotSelected, ...cctvsSelected]
     },[cctvsNotSelected, cctvsSelected])
@@ -211,6 +212,8 @@ const ConfigDialog = props => {
                 <AddManualUrl
                     allCCTVs={allCCTVs}
                     checkedCCTVId={checkedCCTVId}
+                    checkedInSelected={checkedInSelected}
+                    setCCTVsSelectedArray={setCCTVsSelectedAray}
                     setCCTVsNotSelectedArray={setCCTVsNotSelectedArray} 
                 ></AddManualUrl>
             </Dialog>
