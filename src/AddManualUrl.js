@@ -22,20 +22,40 @@ const SubContainer = styled.div`
 
 
 function AddManualUrl(props) {
-  const {allCCTVs, setCCTVsNotSelectedArray} = props;
+  const {allCCTVs, checkedCCTVId, setCCTVsNotSelectedArray} = props;
   const [url, setUrl] = React.useState('');
-  const titleRef = React.useRef('');
+  const [title, setTitle] = React.useState('');
+  // const titleRef = React.useRef('');
+
+  React.useEffect(() => {
+    if(checkedCCTVId){
+      const checkedCCTV = allCCTVs.find(cctv => cctv.cctvId === checkedCCTVId);
+      setUrl(checkedCCTV.url || '');
+      setTitle(checkedCCTV.title || '');
+    } else {
+      setUrl('');
+      setTitle('');
+    }
+  },[allCCTVs, checkedCCTVId])
+
+  const setPlayer = React.useCallback(() => {
+    return null;
+  },[])
+
   const onChangeUrl = React.useCallback((event) => {
     setUrl(event.target.value);
   },[])
+
   const source = React.useMemo(() => {
     return {
       url
     }
   },[url])
+
   const setTitleValue = React.useCallback((event) => {
-    titleRef.current = event.target.value;
-  },[titleRef])
+    setTitle(event.target.value);
+  },[])
+
   const onClickAdd = React.useCallback(() => {
     const ALREADY_INDEX = allCCTVs.findIndex(cctv => cctv.url === url);
     if(ALREADY_INDEX >= 0){
@@ -45,15 +65,15 @@ function AddManualUrl(props) {
     }
     const newCCTV = {
       url,
-      title: titleRef.current,
+      title,
       cctvId: Date.now(),
       num: Date.now()
     } 
     setCCTVsNotSelectedArray(cctvs => {
       return [...cctvs, newCCTV]
     })
-    
-  },[allCCTVs, url, setCCTVsNotSelectedArray])
+  },[allCCTVs, url, title, setCCTVsNotSelectedArray])
+
   return (
     <Container>
         <Box width="300px">
@@ -62,11 +82,11 @@ function AddManualUrl(props) {
             aspectRatio="16:9"
             fill={true}
             enableOverlay={false}
-            setPlayer={()=>{}}
+            setPlayer={setPlayer}
           ></HLSPlayer>
         </Box>
         <SubContainer>
-          <TextField onBlur={setTitleValue} label="Title" variant="outlined" size="small"></TextField>
+          <TextField onChange={setTitleValue} value={title} label="Title" variant="outlined" size="small"></TextField>
           <TextField fullWidth onChange={onChangeUrl} value={url} label="Url" variant="outlined" size="small"></TextField>
           <Button onClick={onClickAdd}>add</Button>
         </SubContainer>

@@ -210,6 +210,7 @@ const ConfigDialog = props => {
                 {/* </DialogContent> */}
                 <AddManualUrl
                     allCCTVs={allCCTVs}
+                    checkedCCTVId={checkedCCTVId}
                     setCCTVsNotSelectedArray={setCCTVsNotSelectedArray} 
                 ></AddManualUrl>
             </Dialog>
