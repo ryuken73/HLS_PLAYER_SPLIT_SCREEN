@@ -26,6 +26,8 @@ const ConfigDialog = props => {
         setCCTVsSelectedAray,
         setCCTVsNotSelectedArray,
         setDialogOpen=()=>{},
+        checkedCCTVId,
+        setCheckedCCTVId,
 
         optionTitle="Select CCTVs",
         // columnData={},
@@ -56,7 +58,7 @@ const ConfigDialog = props => {
             dragFrom: setCCTVsNotSelectedArray,
             dropOn: setCCTVsSelectedAray
         }
-    },[cctvsNotSelected, cctvsSelected])
+    },[setCCTVsNotSelectedArray, setCCTVsSelectedAray])
 
     const columnItems = React.useMemo(() => {
         return {
@@ -103,18 +105,21 @@ const ConfigDialog = props => {
         }
     },[columnItems, methods])
 
-    // const handleChange = React.useCallback(event => {
-    //     setOptionsNSave('groupByArea', event.target.checked);
-    // },[])
-
-    // const handleChangePreload = React.useCallback(event => {
-    //     console.log(event.target.checked)
-    //     setOptionsNSave('preload', event.target.checked)
-    // },[])
-
-    // const handleChangeDisplayGrid = React.useCallback(event => {
-    //     setOptionsNSave('displayGrid', event.target.checked)
-    // },[])
+    const moveAllCCTVs = React.useCallback((fromColumnName) => {
+        // not works.
+        // if(fromColumnName === 'dragFrom'){
+        //     setCCTVsNotSelectedArray([]);
+        //     setCCTVsSelectedAray(selected => {
+        //         return [...selected, cctvsNotSelected];
+        //     });
+        // } 
+        // if(fromColumnName === 'dragOn'){
+        //     setCCTVsSelectedAray([]);
+        //     setCCTVsNotSelectedArray(notSelected => {
+        //         return [...notSelected, cctvsSelected];
+        //     });
+        // } 
+    },[cctvsNotSelected, cctvsSelected, setCCTVsNotSelectedArray, setCCTVsSelectedAray])
 
     const handleChangeGridDimension = React.useCallback(event => {
         setOptionsNSave('gridDimension', event.target.value)
@@ -133,7 +138,7 @@ const ConfigDialog = props => {
                 aria-labelledby="scroll-dialog-title"
                 aria-describedby="scroll-dialog-description"
                 fullWidth
-                maxWidth="sm"
+                maxWidth="md"
             >
                 <DialogTitle id="scroll-dialog-title">
                     <Box display="flex" flexDirection="row">
@@ -187,9 +192,11 @@ const ConfigDialog = props => {
                                     // columnData={columnData}
                                     // cctvs={cctvs}
                                     // setColumnData={setColumnData}
-
                                     columnName={columnName}
                                     columnItems={columnItems[columnName]}
+                                    moveAllCCTVs={moveAllCCTVs}
+                                    checkedCCTVId={checkedCCTVId}
+                                    setCheckedCCTVId={setCheckedCCTVId}
                                 >
                                 </Column>
                             ))}

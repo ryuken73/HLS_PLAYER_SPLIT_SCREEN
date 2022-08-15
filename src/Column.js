@@ -14,6 +14,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
 `
+
 const Title = styled.h5`
   padding: 3px;
   margin: 3px;
@@ -22,7 +23,7 @@ const Title = styled.h5`
 const CCTVList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
-    background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+    background-color: ${props => (props.isDraggingOver ? "skyblue" : "white")};
     flex-grow: 1;
 `
 
@@ -36,33 +37,25 @@ const Column = props => {
         // const cctvsInColumn = cctvIds.map(cctvId => cctvs.find(cctv => cctv.cctvId === cctvId))
         // setColumnItems(cctvsInColumn);
     // },[cctvIds, cctvs])
-    const {columnName, columnItems} = props;
-    const onClickLink = () => {};
+    const {
+        columnName, 
+        columnItems,
+        checkedCCTVId,
+        setCheckedCCTVId,
+        moveAllCCTVs
+    } = props;
     console.log(columnName, columnItems)
 
-    // const onClickLink = React.useCallback(() => {
-    //     const newColumnData = {...columnData};
-    //     const currentColumnId = column.id;
-    //     const targetColumnId = currentColumnId === 'dragFrom' ? 'dropOn' : 'dragFrom';
-    //     const currentCCTVIds = [...newColumnData[currentColumnId].cctvIds];
-    //     const targetCCTVIds = [...newColumnData[targetColumnId].cctvIds];
-    //     const newTargetCCTVIds = [...targetCCTVIds, ...currentCCTVIds];
-    //     const newCurrentCCTVIds = [];
-    //     const newData = {
-    //         [currentColumnId]:{
-    //             ...columnData[currentColumnId],
-    //             cctvIds: newCurrentCCTVIds
-    //         },
-    //         [targetColumnId]:{
-    //             ...columnData[targetColumnId],
-    //             cctvIds: newTargetCCTVIds
-    //         }
-    //     }
+    const onClickLink = React.useCallback(() => {
+        moveAllCCTVs(columnName)
+    },[columnName, moveAllCCTVs])
 
-    //     setColumnData(newData)
-    // },[column, columnData])
+    const setCheckedCCTV = (cctvId, checked) => {
+        checked && setCheckedCCTVId(cctvId);
+        !checked && setCheckedCCTVId(null);
+    }
 
-    const itemColorDefault = columnName === 'dragFrom' ? 'skyblue':'darkblue'
+    const itemColorDefault = columnName === 'dragFrom' ? 'skyblue':'darkblue';
 
     return (
         <Container>
@@ -92,6 +85,8 @@ const Column = props => {
                                 itemText={cctv.title}
                                 index={index} 
                                 colorDefault={itemColorDefault}
+                                checked={cctv.cctvId === checkedCCTVId}
+                                setChecked={setCheckedCCTV}
                             />
                         ))}
                         {provided.placeholder}

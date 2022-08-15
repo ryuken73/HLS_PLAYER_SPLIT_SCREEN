@@ -53,6 +53,7 @@ function App() {
   const [enableOverlayModal, setEnableOverlayModal] = React.useState(false);
   const [overlayContentModal, setOverContentlayModal] = React.useState('');
   const [enableOverlayGlobal, setEnableOverlayGlobal] = React.useState(true);
+  const [checkedCCTVId, setCheckedCCTVId] = React.useState('');
 
   useHotkeys('c', () => setDialogOpen(true));
   const autoPlayIndexRef = React.useRef(0);
@@ -151,6 +152,8 @@ function App() {
             gridDimension={gridDimension}
             autoInterval={autoInterval}
             setDialogOpen={setDialogOpen}
+            checkedCCTVId={checkedCCTVId}
+            setCheckedCCTVId={setCheckedCCTVId}
           ></ConfigDialog>
         </Box>
       </header>
