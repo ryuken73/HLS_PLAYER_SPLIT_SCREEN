@@ -53,6 +53,10 @@ const ConfigDialog = props => {
     //     })
     // }, [cctvsNotSelected, cctvsSelected])
 
+    const allCCTVs = React.useMemo(() => {
+        return [...cctvsNotSelected, ...cctvsSelected]
+    },[cctvsNotSelected, cctvsSelected])
+
     const methods = React.useMemo(() => {
         return {
             dragFrom: setCCTVsNotSelectedArray,
@@ -197,13 +201,17 @@ const ConfigDialog = props => {
                                     moveAllCCTVs={moveAllCCTVs}
                                     checkedCCTVId={checkedCCTVId}
                                     setCheckedCCTVId={setCheckedCCTVId}
+                                    setCCTVs={methods[columnName]}
                                 >
                                 </Column>
                             ))}
                         </Box>
                     </DialogContentText>
                 {/* </DialogContent> */}
-                <AddManualUrl></AddManualUrl>
+                <AddManualUrl
+                    allCCTVs={allCCTVs}
+                    setCCTVsNotSelectedArray={setCCTVsNotSelectedArray} 
+                ></AddManualUrl>
             </Dialog>
         </DragDropContext>
     )

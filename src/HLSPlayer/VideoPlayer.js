@@ -41,9 +41,10 @@ class VideoPlayer extends Component {
             } = props;
             if(this.player.isDisposed == undefined || this.player.isDisposed &&  this.player.isDisposed()){
                 console.log('initialize player:', this.playerId, this.player);
+                // this.player = window.videojs(document.querySelector(`#${this.playerId}`), playerOptions);
                 this.player = window.videojs(document.querySelector(`#${this.playerId}`), playerOptions);
             }
-            console.log('#######', enableOverlay, this.player)
+            console.log('#######', playerOptions);
             if(enableOverlay){
                 this.player.overlay(
                     {
