@@ -5,6 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
+import {remove} from './lib/arrayUtil';
 
 const Container = styled.div`
     display: flex;
@@ -31,13 +32,22 @@ const DragItem = props => {
         itemText, 
         index, 
         checked=false,
-        setChecked
+        setChecked,
+        setCCTVs
     } = props;
     const stringId = id.toString();
     const {colorDefault='grey', colorDragging='royalblue'} = props;
+
     const onChange = React.useCallback((event) => {
         setChecked(id, event.target.checked)
     },[id, setChecked])
+
+    const removeItem = React.useCallback(() => {
+        setCCTVs(cctvs => {
+            return remove(cctvs).fromIndex(index)
+        })
+    },[index, setCCTVs])
+    
     return (
         <Draggable key={id} draggableId={stringId} index={index}>
             {(provided, snapshot) => (
@@ -54,7 +64,7 @@ const DragItem = props => {
                         {itemText}
                     </Box>
                     <Box sx={{marginLeft:'auto'}}>
-                        <IconButton aria-label="remove" size="small">
+                        <IconButton onClick={removeItem} aria-label="remove" size="small">
                             <StyledClearIcon fontSize="small" />
                         </IconButton>                        
                     </Box>
