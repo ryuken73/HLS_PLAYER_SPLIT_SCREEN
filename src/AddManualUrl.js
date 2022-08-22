@@ -65,6 +65,18 @@ function AddManualUrl(props) {
     setTitle(event.target.value);
   },[])
 
+  const onDragOver = React.useCallback((event) => {
+    event.preventDefault();
+  },[])
+
+  const onDrop = React.useCallback((event) => {
+    event.preventDefault();
+    const dropped = JSON.parse(event.dataTransfer.getData('application/json'));
+    const {cctvId, title, url} = dropped;
+    setTitle(title);
+    setUrl(url);
+  },[])
+
   const onClickAdd = React.useCallback(() => {
     if(checkedCCTVId){
       if(checkedInSelected){
@@ -107,7 +119,7 @@ function AddManualUrl(props) {
   },[checkedCCTVId, allCCTVs, url, title, setCCTVsNotSelectedArray, checkedInSelected, setCCTVsSelectedArray])
 
   return (
-    <Container>
+    <Container onDragOver={onDragOver} onDrop={onDrop}>
         <Box width="300px">
           <HLSPlayer 
             source={source}
