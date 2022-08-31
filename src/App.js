@@ -35,6 +35,13 @@ const KEY_OPTIONS = 'hlsCCTVOptions';
 const KEY_SELECT_SAVED = 'selectedSavedCCTVs';
 const KEY_NOT_SELECT_SAVED = 'notSelectedSavedCCTVs';
 
+const getRealIndex = (gridNum, gridDimension, realSelectedArray) => {
+  const totalGridNum = gridDimension * gridDimension;
+  const safeMaxIndex = Math.min(totalGridNum, realSelectedArray.length);
+  return gridNum % safeMaxIndex
+
+}
+
 function App() {
   const [savedOptions, saveOptions] = useLocalStorage(KEY_OPTIONS,{});
   const [selectedSaved, saveSelectedCCTVs] = useLocalStorage(KEY_SELECT_SAVED,[]);
@@ -54,26 +61,30 @@ function App() {
   const [overlayContentModal, setOverContentlayModal] = React.useState('');
   const [enableOverlayGlobal, setEnableOverlayGlobal] = React.useState(true);
   const [checkedCCTVId, setCheckedCCTVId] = React.useState('');
+  const [currentGridNum, setCurrentGridNum] = React.useState(null);
 
   useHotkeys('c', () => setDialogOpen(true));
   const autoPlayIndexRef = React.useRef(0);
   const preLoadMapRef = React.useRef(new Map());
   const setLeftSmallPlayerRef = React.useRef(()=>{});
+  const gridNumNormalized = getRealIndex(currentGridNum, gridDimension, cctvsSelectedArray)
 
   const maximizeGrid = React.useCallback(gridNum => {
-    const totalGridNum = gridDimension * gridDimension;
-    const safeMaxIndex = Math.min(totalGridNum, cctvsSelectedArray.length);
-    console.log('maximizeGrid gridNum=', gridNum);
-    const cctv = cctvsSelectedArray[gridNum % safeMaxIndex];
+    // const totalGridNum = gridDimension * gridDimension;
+    // const safeMaxIndex = Math.min(totalGridNum, cctvsSelectedArray.length);
+    // console.log('maximizeGrid gridNum=', gridNum);
+    // const cctv = cctvsSelectedArray[gridNum % safeMaxIndex];
+    const realIndex = getRealIndex(gridNum, gridDimension, cctvsSelectedArray)
+    const cctv = cctvsSelectedArray[realIndex];
     const cctvId = cctv.cctvId;
     const preloadMap = preLoadMapRef.current;
     const preloadElement = preloadMap.get(cctvId.toString());
     console.log(cctvId, preloadMap, preloadElement)
     mirrorModalPlayer(preloadElement, modalPlayer);
-    // setEnableOverlayModal(true);
     setEnableOverlayModal(enableOverlayGlobal);
     setOverContentlayModal(cctv.title)
     setModalOpen(true);
+    setCurrentGridNum(gridNum)
     autoPlayIndexRef.current = gridNum;
   },[modalPlayer, gridDimension, cctvsSelectedArray, enableOverlayGlobal])
 
@@ -129,7 +140,16 @@ function App() {
             enableOverlayGlobal={enableOverlayGlobal}
             toggleOverlayGlobal={toggleOverlayGlobal}
           ></GridVideos>
-          <ModalBox open={modalOpen} keepMounted={true} autoPlay={autoPlay} setOpen={setModalOpen} contentWidth="80%" contentHeight="auto">
+          <ModalBox 
+            open={modalOpen} 
+            currentGridNum={gridNumNormalized} 
+            gridDimension={gridDimension}
+            keepMounted={true} 
+            autoPlay={autoPlay} 
+            setOpen={setModalOpen} 
+            contentWidth="80%" 
+            contentHeight="auto"
+          >
             <HLSPlayer 
               fill={true}
               responsive={true}
