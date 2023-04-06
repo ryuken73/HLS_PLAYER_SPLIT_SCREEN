@@ -55,7 +55,7 @@ const GridVideos = props => {
     return (
         <Container dimension={gridDimension}>
             {cctvsSelected.map((cctv,cctvIndex) => (
-                <Box key={cctv.cctvId} id={cctv.cctvId} ref={addToPreloadMap} minWidth="60px" height="100%">
+                <Box key={cctv.cctvId} id={cctv.cctvId} ref={addToPreloadMap} overflow="hidden" minWidth="60px" height="100%">
                     <div style={{height: "100%", boxSizing: "border-box", padding:"1px", borderColor:"black", border:"solid 1px black", background:`${autoPlay ? "maroon":"white"}`}}>
                     {mp4RegExp.test(cctv.url) ? (
                         <MP4Player source={cctv}></MP4Player>
