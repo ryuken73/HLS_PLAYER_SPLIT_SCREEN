@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 import HLSPlayer from './HLSPlayer';
+import MP4Player from './MP4Player';
 import {replace} from './lib/arrayUtil';
 
 const Container = styled.div`
@@ -60,6 +61,9 @@ function AddManualUrl(props) {
       url
     }
   },[url])
+
+  const mp4RegExp = /.*\.mp4.*/;
+  const isMP4 = mp4RegExp.test(source.url);
 
   const setTitleValue = React.useCallback((event) => {
     setTitle(event.target.value);
@@ -121,13 +125,17 @@ function AddManualUrl(props) {
   return (
     <Container onDragOver={onDragOver} onDrop={onDrop}>
         <Box width="300px">
-          <HLSPlayer 
-            source={source}
-            aspectRatio="16:9"
-            fill={true}
-            enableOverlay={false}
-            setPlayer={setPlayer}
-          ></HLSPlayer>
+          {isMP4 ? (
+            <MP4Player source={source}></MP4Player>
+          ):(
+            <HLSPlayer 
+              source={source}
+              aspectRatio="16:9"
+              fill={true}
+              enableOverlay={false}
+              setPlayer={setPlayer}
+            ></HLSPlayer>
+          )}
         </Box>
         <SubContainer>
           <TextField onChange={setTitleValue} value={title} label="Title" variant="outlined" size="small"></TextField>

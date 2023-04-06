@@ -2,6 +2,7 @@ import React from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import {AbsolutePositionBox, TransparentPaper} from './template/basicComponents';
 import HLSPlayer from './HLSPlayer';
+import MP4Player from './MP4Player';
 import Box from '@mui/material/Box';
 import styled from 'styled-components';
 
@@ -29,6 +30,9 @@ const GridVideos = props => {
     // const cctvs = [...cctvsInAreas.values()].flat();
 
     console.log('#', cctvsSelected, enableOverlayGlobal)
+
+    const mp4RegExp = /.*\.mp4.*/;
+
     const addToPreloadMap = element => {
         if(element === null) return;
         const cctvId = element.id;
@@ -53,18 +57,22 @@ const GridVideos = props => {
             {cctvsSelected.map((cctv,cctvIndex) => (
                 <Box key={cctv.cctvId} id={cctv.cctvId} ref={addToPreloadMap} minWidth="60px" height="100%">
                     <div style={{height: "100%", boxSizing: "border-box", padding:"1px", borderColor:"black", border:"solid 1px black", background:`${autoPlay ? "maroon":"white"}`}}>
-                    <HLSPlayer 
-                        width={350}
-                        height={200}
-                        fluid={false}
-                        aspectRatio=""
-                        fill={true}
-                        source={cctv}
-                        setPlayer={setPlayer}
-                        enableOverlay={enableOverlayGlobal}
-                        overlayBig={true}
-                        overlayContent={cctv.title}
-                    ></HLSPlayer>
+                    {mp4RegExp.test(cctv.url) ? (
+                        <MP4Player source={cctv}></MP4Player>
+                    ):(
+                        <HLSPlayer 
+                            width={350}
+                            height={200}
+                            fluid={false}
+                            aspectRatio=""
+                            fill={true}
+                            source={cctv}
+                            setPlayer={setPlayer}
+                            enableOverlay={enableOverlayGlobal}
+                            overlayBig={true}
+                            overlayContent={cctv.title}
+                        ></HLSPlayer>
+                    )}
                     </div>
                 </Box>
             ))}
