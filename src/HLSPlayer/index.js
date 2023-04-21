@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import Box from '@mui/material/Box';
 import VideoPlayer from './VideoPlayer';
+import styled from 'styled-components';
+// import { useSwiper } from 'swiper/react';
+
+const Container = styled.div`
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+`
 
 const HLSPlayer = (props) => {
     console.log('rerender hlsplayer', props)
+    // const swiper = useSwiper();
     const {
         player=null, 
         enableAutoRefresh=null, 
@@ -45,7 +54,13 @@ const HLSPlayer = (props) => {
 
     React.useEffect(() => {
         console.log('playbackRate: ', activeSource, source.url);
-    },[])
+    }, [])
+
+    // React.useEffect(() => {
+    //   if(!show){
+    //     swiper.slideNext();
+    //   }
+    // }, [show, swiper])
 
     const channelLog = console;
     const onPlayerReady = player => {
@@ -135,44 +150,44 @@ const HLSPlayer = (props) => {
     }
 
     return (
-        <Box overflow="hidden" width="100%" height="100%">
-            <VideoPlayer
-                controls={controls}
-                src={srcObject}
-                // poster={this.state.video.poster}
-                autoplay={autoplay}
-                bigPlayButton={bigPlayButton}
-                bigPlayButtonCentered={bigPlayButtonCentered}
-                width={width}
-                height={height}
-                onCanPlay={onVideoCanPlay}
-                onReady={onPlayerReady}
-                onLoadStart={onLoadStart}
-                onPlay={onVideoPlay}
-                onPause={onVideoPause}
-                onTimeUpdate={onVideoTimeUpdate}
-                onSeeking={onVideoSeeking}
-                onSeeked={onVideoSeeked}
-                onError={onVideoError}
-                onEnd={onVideoEnd}
-                onOtherEvent={onVideoOtherEvent}
-                handleManifestRedirects={true}
-                liveui={true}
-                enableOverlay={enableOverlay}
-                overlayContent={overlayContent}
-                overlayRightBtn={overlayRightBtn}
-                overlayLeftBtn={overlayLeftBtn}
-                startSecondsOffset={startSecondsOffset}
-                inactivityTimeout={0}
-                hideControls={['volume', 'timer']}
-                fluid={fluid}
-                responsive={responsive}
-                aspectRatio={aspectRatio}
-                fill={fill}
-                overlayBig={overlayBig}
-                overlayModal={overlayModal}
-            />
-        </Box>
+      <Container>
+        <VideoPlayer
+            controls={controls}
+            src={srcObject}
+            // poster={this.state.video.poster}
+            autoplay={autoplay}
+            bigPlayButton={bigPlayButton}
+            bigPlayButtonCentered={bigPlayButtonCentered}
+            width={width}
+            height={height}
+            onCanPlay={onVideoCanPlay}
+            onReady={onPlayerReady}
+            onLoadStart={onLoadStart}
+            onPlay={onVideoPlay}
+            onPause={onVideoPause}
+            onTimeUpdate={onVideoTimeUpdate}
+            onSeeking={onVideoSeeking}
+            onSeeked={onVideoSeeked}
+            onError={onVideoError}
+            onEnd={onVideoEnd}
+            onOtherEvent={onVideoOtherEvent}
+            handleManifestRedirects={true}
+            liveui={true}
+            enableOverlay={enableOverlay}
+            overlayContent={overlayContent}
+            overlayRightBtn={overlayRightBtn}
+            overlayLeftBtn={overlayLeftBtn}
+            startSecondsOffset={startSecondsOffset}
+            inactivityTimeout={0}
+            hideControls={['volume', 'timer']}
+            fluid={fluid}
+            responsive={responsive}
+            aspectRatio={aspectRatio}
+            fill={fill}
+            overlayBig={overlayBig}
+            overlayModal={overlayModal}
+        />
+      </Container>
     );
 };
 

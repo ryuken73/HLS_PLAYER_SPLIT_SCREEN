@@ -98,19 +98,13 @@ function SimpleModal(props) {
         {...props}
       >
         <Zoom in={open} timeout={500}>
-        {/* <Grow in={open} timeout={1500}> */}
-        {/* <Fade in={open} timeout={500}>  */}
           <Box onClick={handleClose} display="flex" height="100%">
-            {/* <Box className={classes.paper}> */}
-            {/* <ModalContainer fadeIn={fadeIn} trX={trX} trY={trY} {...props}> */}
             <ModalContainer {...props}>
               <Box>
                 {children}
               </Box>
             </ModalContainer>
           </Box>
-        {/* </Fade> */}
-        {/* </Grow> */}
         </Zoom>
       </Modal>
     </Box>

@@ -5,9 +5,13 @@ import ModalBox from './ModalBox';
 import HLSPlayer from './HLSPlayer';
 import ConfigDialog from './ConfigDialog';
 import Box from '@mui/material/Box';
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
 import { useHotkeys } from 'react-hotkeys-hook';
 import useLocalStorage from './hooks/useLocalStorage';
 import useAutoPlay from './hooks/useAutoPlay';
+import SwiperControl from './SlderControl';
+import "swiper/css";
  
 const mirrorModalPlayer = (playerNode, modalPlayer) => {
   const videoElement =  playerNode.querySelector('video');
@@ -38,8 +42,7 @@ const KEY_NOT_SELECT_SAVED = 'notSelectedSavedCCTVs';
 const getRealIndex = (gridNum, gridDimension, realSelectedArray) => {
   const totalGridNum = gridDimension * gridDimension;
   const safeMaxIndex = Math.min(totalGridNum, realSelectedArray.length);
-  return gridNum % safeMaxIndex
-
+  return gridNum % safeMaxIndex;
 }
 
 function App() {
@@ -51,7 +54,8 @@ function App() {
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
-  const [modalPlayer, setModalPlayer] = React.useState(null);
+  const [modalPlayer1, setModalPlayer1] = React.useState(null);
+  const [modalPlayer2, setModalPlayer2] = React.useState(null);
   const [gridDimension, setGridDimension] = React.useState(INITIAL_GRID_DIMENSION);
   const [autoPlay, setAutoPlay] = React.useState(false);
   const [autoInterval, setAutoInterval] = React.useState(INITIAL_AUTO_INTERVAL);
@@ -62,6 +66,8 @@ function App() {
   const [enableOverlayGlobal, setEnableOverlayGlobal] = React.useState(true);
   const [checkedCCTVId, setCheckedCCTVId] = React.useState('');
   const [currentGridNum, setCurrentGridNum] = React.useState(null);
+  const [playerChanged, setPlayerChanged] = React.useState(Date.now());
+  const modalPlayerNumRef = React.useRef(0);
 
   useHotkeys('c', () => setDialogOpen(true));
   const autoPlayIndexRef = React.useRef(0);
@@ -69,24 +75,32 @@ function App() {
   const setLeftSmallPlayerRef = React.useRef(()=>{});
   const gridNumNormalized = getRealIndex(currentGridNum, gridDimension, cctvsSelectedArray)
 
+  const getNextPlayer = React.useCallback(() => {
+    if(modalPlayerNumRef.current === 0){
+      return [modalPlayer2, 1];
+    } else {
+      return [modalPlayer1, 0];
+    }
+  }, [modalPlayer1, modalPlayer2])
+
   const maximizeGrid = React.useCallback(gridNum => {
-    // const totalGridNum = gridDimension * gridDimension;
-    // const safeMaxIndex = Math.min(totalGridNum, cctvsSelectedArray.length);
-    // console.log('maximizeGrid gridNum=', gridNum);
-    // const cctv = cctvsSelectedArray[gridNum % safeMaxIndex];
     const realIndex = getRealIndex(gridNum, gridDimension, cctvsSelectedArray)
+    // const targetModalPlayerNum = realIndex % 2;
     const cctv = cctvsSelectedArray[realIndex];
     const cctvId = cctv.cctvId;
     const preloadMap = preLoadMapRef.current;
     const preloadElement = preloadMap.get(cctvId.toString());
-    console.log(cctvId, preloadMap, preloadElement)
+    const [modalPlayer, nextModalPlayerNum]  = getNextPlayer();
+    console.log('!!!', realIndex, cctvId, preloadMap, preloadElement, modalPlayer)
     mirrorModalPlayer(preloadElement, modalPlayer);
     setEnableOverlayModal(enableOverlayGlobal);
     setOverContentlayModal(cctv.title)
     setModalOpen(true);
     setCurrentGridNum(gridNum)
+    setPlayerChanged(Date.now())
+    modalPlayerNumRef.current = nextModalPlayerNum;
     autoPlayIndexRef.current = gridNum;
-  },[modalPlayer, gridDimension, cctvsSelectedArray, enableOverlayGlobal])
+  },[gridDimension, cctvsSelectedArray, getNextPlayer, enableOverlayGlobal])
 
   useAutoPlay({autoPlay, autoInterval, maximizeGrid, autoPlayIndexRef});
 
@@ -150,16 +164,33 @@ function App() {
             contentWidth="80%" 
             contentHeight="auto"
           >
-            <HLSPlayer 
-              fill={true}
-              responsive={true}
-              setPlayer={setModalPlayer}
-              aspectRatio={"16:9"}
-              enableOverlay={enableOverlayModal}
-              overlayContent={overlayContentModal}
-              overlayBig={true}
-              overlayModal={true}
-            ></HLSPlayer>
+            <Swiper loop={true} speed={1000}>
+              <SwiperControl playerChanged={playerChanged} />
+              <SwiperSlide>
+                <HLSPlayer 
+                  fill={true}
+                  responsive={true}
+                  setPlayer={setModalPlayer1}
+                  aspectRatio={"16:9"}
+                  enableOverlay={enableOverlayModal}
+                  overlayContent={overlayContentModal}
+                  overlayBig={true}
+                  overlayModal={true}
+                ></HLSPlayer>
+              </SwiperSlide>
+              <SwiperSlide>
+                <HLSPlayer 
+                  fill={true}
+                  responsive={true}
+                  setPlayer={setModalPlayer2}
+                  aspectRatio={"16:9"}
+                  enableOverlay={enableOverlayModal}
+                  overlayContent={overlayContentModal}
+                  overlayBig={true}
+                  overlayModal={true}
+                ></HLSPlayer>
+              </SwiperSlide>
+            </Swiper>
           </ModalBox>
           <ConfigDialog 
             open={dialogOpen} 
