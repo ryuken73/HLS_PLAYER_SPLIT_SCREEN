@@ -6,6 +6,7 @@ import HLSPlayer from './HLSPlayer';
 import ConfigDialog from './ConfigDialog';
 import Box from '@mui/material/Box';
 import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectFade } from 'swiper';
 // Import Swiper styles
 import { useHotkeys } from 'react-hotkeys-hook';
 import useLocalStorage from './hooks/useLocalStorage';
@@ -67,7 +68,7 @@ function App() {
   const [checkedCCTVId, setCheckedCCTVId] = React.useState('');
   const [currentGridNum, setCurrentGridNum] = React.useState(null);
   const [playerChanged, setPlayerChanged] = React.useState(Date.now());
-  const modalPlayerNumRef = React.useRef(0);
+  const modalPlayerNumRef = React.useRef(1);
 
   useHotkeys('c', () => setDialogOpen(true));
   const autoPlayIndexRef = React.useRef(0);
@@ -164,7 +165,12 @@ function App() {
             contentWidth="80%" 
             contentHeight="auto"
           >
-            <Swiper loop={true} speed={1000}>
+            <Swiper 
+              loop={true} 
+              speed={1000}
+              // effect="fade"
+              // modules={[EffectFade]}
+            >
               <SwiperControl playerChanged={playerChanged} />
               <SwiperSlide>
                 <HLSPlayer 
