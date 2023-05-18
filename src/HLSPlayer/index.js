@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Box from '@mui/material/Box';
 import VideoPlayer from './VideoPlayer';
 import styled from 'styled-components';
+import {getYoutubeId, getYoutubePlaylistUrl} from '../lib/sourceUtil';
 // import { useSwiper } from 'swiper/react';
 
 const Container = styled.div`
@@ -28,7 +29,8 @@ const HLSPlayer = (props) => {
         overlayBig=false,
         overlayModal=false,
     } = props;
-    console.log('###### source in HLSPlayer:', startSecondsOffset)
+    console.log('###### source in HLSPlayer:', overlayContent)
+    console.log('!!! overlayContent in HLSPlayer:', overlayContent)
 
     const {
         width="100%",
@@ -44,11 +46,37 @@ const HLSPlayer = (props) => {
     const {activeSource} = props;
     const {setPlayer} = props;
 
-    const srcObject = {
+    const [srcObject, setSrcObject] = React.useState({
         src: source.url,
         type,
-        handleManifestRedirects: true,
-    }
+        handleManifestRedirects: true
+    })
+    
+    React.useEffect(() => {
+        console.log('&&&& source changed:',source)
+        const youtubeRegExp = /:\/\/www\.youtube\./;
+        const isYoutubeUrl = youtubeRegExp.test(source.url);
+        if(isYoutubeUrl){
+            const youtubeId = getYoutubeId(source.url);
+            getYoutubePlaylistUrl(youtubeId)
+            .then((result) => {
+                setSrcObject(srcObject => {
+                    return {
+                        ...srcObject,
+                        src: result
+                    }
+                })
+            });
+        } else {
+            Promise.resolve();
+        }
+    }, [source]);
+
+    // const srcObject = {
+    //     src: source.url,
+    //     type,
+    //     handleManifestRedirects: true,
+    // }
 
     // make util...
 
@@ -63,11 +91,38 @@ const HLSPlayer = (props) => {
     // }, [show, swiper])
 
     const channelLog = console;
-    const onPlayerReady = player => {
+    const onPlayerReady = React.useCallback((player) => {
         channelLog.info("Player is ready");
         setPlayer(player);
         player.muted(true);
-    }
+        const qualityLevels = player.qualityLevels();
+        const youtubeRegExp = /:\/\/www\.youtube\./;
+        const isYoutubeUrl = youtubeRegExp.test(source.url);
+        if(isYoutubeUrl && qualityLevels) {
+            qualityLevels.on('addqualitylevel', event => {
+                const qualityLevel = event.qualityLevel;
+                if(qualityLevel.height < 700){
+                    qualityLevel.enabled = false
+                }
+                console.log(qualityLevel)
+            })
+        }
+    }, [channelLog, setPlayer, source.url]);
+    // const onPlayerReady = player => {
+    //     channelLog.info("Player is ready");
+    //     setPlayer(player);
+    //     player.muted(true);
+    //     const qualityLevels = player.qualityLevels();
+    //     if(qualityLevels) {
+    //         qualityLevels.on('addqualitylevel', event => {
+    //             const qualityLevel = event.qualityLevel;
+    //             if(qualityLevel.height < 200){
+    //                 qualityLevel.enabled = false
+    //             }
+    //             console.log(qualityLevel)
+    //         })
+    //     }
+    // }
 
     const onVideoPlay = React.useCallback(duration => {
         // channelLog.info("Video played at: ", duration);
@@ -124,7 +179,7 @@ const HLSPlayer = (props) => {
     }
 
     const onVideoOtherEvent = (eventName, player) => {
-        console.log(`event occurred: ${eventName}`)
+        console.log(`event occurred: ${eventName}`);
         if(eventName === 'abort' && enableAutoRefresh !== null){
             refreshTimer = setInterval(() => {
                 channelLog.info('refresh player because of long buffering')
