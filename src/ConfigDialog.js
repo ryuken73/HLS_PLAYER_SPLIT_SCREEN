@@ -149,22 +149,6 @@ const ConfigDialog = props => {
                     <Box display="flex" flexDirection="row">
                         {optionTitle}
                         <Box style={{marginLeft:'auto'}}>
-                            {/* {!groupByArea && !displayGrid &&
-                            <FormControlLabel 
-                                control={<Checkbox color="primary" size="small" checked={preload} onChange={handleChangePreload} />} 
-                                label="미리보기" 
-                            />
-                            }
-                            {!displayGrid &&
-                            <FormControlLabel 
-                                control={<Checkbox color="primary" size="small" checked={groupByArea} onChange={handleChange} />} 
-                                label="지역별로 묶기" 
-                            />
-                            }
-                            <FormControlLabel 
-                                control={<Checkbox color="primary" size="small" checked={displayGrid} onChange={handleChangeDisplayGrid} />} 
-                                label="분할화면" 
-                            /> */}
                         </Box>
                         {displayGrid && 
                             <RadioGroup
@@ -192,11 +176,6 @@ const ConfigDialog = props => {
                         <Box display="flex" justifyContent="space-around">
                             {columnNames.map(columnName => (
                                 <Column
-                                    // title={columnData[columnName].title}
-                                    // column={columnData[columnName]}
-                                    // columnData={columnData}
-                                    // cctvs={cctvs}
-                                    // setColumnData={setColumnData}
                                     columnName={columnName}
                                     columnItems={columnItems[columnName]}
                                     moveAllCCTVs={moveAllCCTVs}
