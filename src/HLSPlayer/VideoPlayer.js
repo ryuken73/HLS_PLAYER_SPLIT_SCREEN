@@ -14,7 +14,7 @@ class VideoPlayer extends Component {
     componentWillReceiveProps(nextProps){
         this.set_controls_visibility(this.player, nextProps.hideControls);
         // console.log('&&&& in videoPlayer: ', this.props.src, nextProps.src)
-        if(this.props.src !== nextProps.src){
+        if(this.props.src !== nextProps.src || this.props.overlayContent !== nextProps.overlayContent){
             this.init_player(nextProps);
         }
     }
