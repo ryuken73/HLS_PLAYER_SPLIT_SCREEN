@@ -29,6 +29,21 @@ export const orderByArea = cctvs => {
     return [...orderedByAreaMap.values()].flat();
 }  
 
+export const mirrorModalPlayer = (playerNode, modalPlayer) => {
+  const videoElement =  playerNode.querySelector('video');
+  console.log('### videoElement:', videoElement, modalPlayer);
+  const mediaStream = videoElement.captureStream();
+  const modalVideoPlayer = modalPlayer.tech().el();
+  modalVideoPlayer.srcObject = null;
+  modalVideoPlayer.srcObject = mediaStream;
+}
+
+export const getRealIndex = (gridNum, gridDimension, realSelectedArray) => {
+  const totalGridNum = gridDimension * gridDimension;
+  const safeMaxIndex = Math.min(totalGridNum, realSelectedArray.length);
+  return gridNum % safeMaxIndex;
+}
+
 export const getYoutubePlaylistUrl = videoId => {
     return new Promise((resolve, reject) => {
         fetch(`${YOUTUBE_HLS_URL_GET_API}/${videoId}`)
