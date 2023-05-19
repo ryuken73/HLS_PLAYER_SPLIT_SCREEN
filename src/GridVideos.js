@@ -40,15 +40,6 @@ const GridVideos = props => {
         preloadMap.set(cctvId, element);
     }
 
-    useHotkeys('1', () => maximizeGrid('0'), [maximizeGrid])
-    useHotkeys('2', () => maximizeGrid('1'), [maximizeGrid])
-    useHotkeys('3', () => maximizeGrid('2'), [maximizeGrid])
-    useHotkeys('4', () => maximizeGrid('3'), [maximizeGrid])
-    useHotkeys('5', () => maximizeGrid('4'), [maximizeGrid])
-    useHotkeys('6', () => maximizeGrid('5'), [maximizeGrid])
-    useHotkeys('7', () => maximizeGrid('6'), [maximizeGrid])
-    useHotkeys('8', () => maximizeGrid('7'), [maximizeGrid])
-    useHotkeys('9', () => maximizeGrid('8'), [maximizeGrid])
     useHotkeys('a', () => toggleAutoPlay(), [toggleAutoPlay])
     useHotkeys('t', () => toggleOverlayGlobal(), [toggleOverlayGlobal])
 
