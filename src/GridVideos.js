@@ -19,7 +19,6 @@ const GridVideos = props => {
         preLoadMapRef=null,
         cctvsSelected=[],
         setPlayer,
-        maximizeGrid,
         toggleAutoPlay,
         autoPlay,
         gridDimension=2,

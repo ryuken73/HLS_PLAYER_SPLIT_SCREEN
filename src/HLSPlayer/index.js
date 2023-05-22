@@ -10,12 +10,22 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
 `
+const NumDisplay = styled.div`
+  position: absolute;
+  top:10px;
+  left:10px;
+  background: white;
+  width: 100px;
+  z-index: 9999;
+
+`
 
 const HLSPlayer = (props) => {
     console.log('rerender hlsplayer', props)
     // const swiper = useSwiper();
     const {
         player=null, 
+        playerNum=null,
         enableAutoRefresh=null, 
         enableOverlay=false,
         overlayContent='Default Overlay Content',
@@ -51,9 +61,19 @@ const HLSPlayer = (props) => {
         type,
         handleManifestRedirects: true
     })
+    const [lastReloadTime, setLastReloadTime] = React.useState(Date.now());
+
+    React.useEffect(() => {
+        const reloadTimer = setTimeout(() => {
+            setLastReloadTime(Date.now());
+        }, 3600000 + Math.random()*20000)
+        return () => {
+            clearTimeout(reloadTimer);
+        }
+    }, [lastReloadTime])
     
     React.useEffect(() => {
-        console.log('&&&& source changed:',source)
+        console.log('&&&& source changed:',source, lastReloadTime)
         const youtubeRegExp = /:\/\/www\.youtube\./;
         const isYoutubeUrl = youtubeRegExp.test(source.url);
         if(isYoutubeUrl){
@@ -70,7 +90,7 @@ const HLSPlayer = (props) => {
         } else {
             Promise.resolve();
         }
-    }, [source]);
+    }, [source, lastReloadTime]);
 
     // const srcObject = {
     //     src: source.url,
@@ -206,6 +226,7 @@ const HLSPlayer = (props) => {
 
     return (
       <Container>
+        <NumDisplay>{playerNum}</NumDisplay>
         <VideoPlayer
             controls={controls}
             src={srcObject}

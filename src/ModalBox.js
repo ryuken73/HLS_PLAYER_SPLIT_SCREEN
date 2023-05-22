@@ -68,7 +68,7 @@ function SimpleModal(props) {
   // const classes = useStyles(props);
   const {children, currentGridNum, gridDimension} = props;
   console.log('### modal:', props)
-  const {open, setOpen, autoPlay} = props;
+  const {open, setOpen, modalOpenRef, autoPlay} = props;
   // const [fadeIn, setFadeIn] = React.useState(open);
   // const [trX, trY] = getTranslateRate(currentGridNum, gridDimension);
   // React.useEffect(() => {
@@ -86,6 +86,7 @@ function SimpleModal(props) {
 
   const handleClose = () => {
     setOpen(false);
+    modalOpenRef.current = false;
   };
 
   return (
