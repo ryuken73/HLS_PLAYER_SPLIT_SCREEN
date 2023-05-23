@@ -103,12 +103,15 @@ const HLSPlayer = (props) => {
                 })
             });
         } else {
+            if(source.url !== undefined){
+
             setSrcObject(srcObject => {
                 return {
                     ...srcObject,
                     src: source.url
                 }
             })
+            }
         }
     }, [source, lastReloadTime]);
 
@@ -165,7 +168,7 @@ const HLSPlayer = (props) => {
     // }
 
     const onVideoPlay = React.useCallback(duration => {
-        // channelLog.info("Video played at: ", duration);
+        channelLog.info("Video played at: ", duration);
     },[]);
 
     const onVideoPause = React.useCallback(duration =>{
@@ -173,7 +176,7 @@ const HLSPlayer = (props) => {
     },[]);
 
     const onVideoTimeUpdate =  React.useCallback(duration => {
-        // channelLog.info("Time updated: ", duration);
+        channelLog.info("Time updated: ", duration);
     },[]);
 
     const onVideoSeeking =  React.useCallback(duration => {
@@ -193,7 +196,7 @@ const HLSPlayer = (props) => {
     },[])
 
     const onVideoEnd = React.useCallback(() => {
-        // channelLog.info("Video ended");
+        channelLog.info("Video ended");
     },[])
 
     const onVideoCanPlay = React.useCallback(player => {
