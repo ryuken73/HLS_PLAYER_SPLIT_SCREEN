@@ -57,6 +57,7 @@ export const getYoutubePlaylistUrl = videoId => {
         })
         .catch(err => {
             reject(err);
+            alert('Only Support Youtube Live Stream!')
         })
     })
 }

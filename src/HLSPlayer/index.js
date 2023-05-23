@@ -17,9 +17,15 @@ const NumDisplay = styled.div`
   background: white;
   width: 100px;
   z-index: 9999;
-
 `
-
+const find720p = (srcArray) => {
+    const src720p = srcArray.find(src => {
+        const mp4MimeType = "video/mp4"
+        return src.mimeType.includes(mp4MimeType) && src.height >= 720;
+    })
+    console.log('**',srcArray)
+    return src720p ? src720p.url : '';
+}
 const HLSPlayer = (props) => {
     console.log('rerender hlsplayer', props)
     // const swiper = useSwiper();
@@ -71,6 +77,8 @@ const HLSPlayer = (props) => {
             clearTimeout(reloadTimer);
         }
     }, [lastReloadTime])
+
+    console.log('&&&&', srcObject)
     
     React.useEffect(() => {
         console.log('&&&& source changed:',source, lastReloadTime)
@@ -80,10 +88,17 @@ const HLSPlayer = (props) => {
             const youtubeId = getYoutubeId(source.url);
             getYoutubePlaylistUrl(youtubeId)
             .then((result) => {
+                let src = result;
+                let type = 'application/x-mpegURL'
+                if(Array.isArray(result)){
+                    src = find720p(result);
+                    type = "video/mp4"
+                }
                 setSrcObject(srcObject => {
                     return {
                         ...srcObject,
-                        src: result
+                        src,
+                        type
                     }
                 })
             });
