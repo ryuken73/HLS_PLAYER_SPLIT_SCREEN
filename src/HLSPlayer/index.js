@@ -72,7 +72,7 @@ const HLSPlayer = (props) => {
     React.useEffect(() => {
         const reloadTimer = setTimeout(() => {
             setLastReloadTime(Date.now());
-        }, 3600000 + Math.random()*20000)
+        }, 3600000 + Math.random()*200000)
         return () => {
             clearTimeout(reloadTimer);
         }
@@ -103,7 +103,12 @@ const HLSPlayer = (props) => {
                 })
             });
         } else {
-            Promise.resolve();
+            setSrcObject(srcObject => {
+                return {
+                    ...srcObject,
+                    src: source.url
+                }
+            })
         }
     }, [source, lastReloadTime]);
 
@@ -241,7 +246,7 @@ const HLSPlayer = (props) => {
 
     return (
       <Container>
-        <NumDisplay>{playerNum}</NumDisplay>
+        {/* <NumDisplay>{playerNum}</NumDisplay> */}
         <VideoPlayer
             controls={controls}
             src={srcObject}
