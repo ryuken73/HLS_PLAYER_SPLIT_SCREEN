@@ -38,7 +38,7 @@ function App() {
   const [overlayContentModal, setOverContentlayModal] = React.useState('');
   const [enableOverlayGlobal, setEnableOverlayGlobal] = React.useState(true);
   const [checkedCCTVId, setCheckedCCTVId] = React.useState('');
-  const [currentGridNum, setCurrentGridNum] = React.useState(null);
+  const [currentCCTVIndex, setCurrentCCTVIndex] = React.useState(null);
   const [swiper, setSwiper] = React.useState(null);
   const modalPlayerNumRef = React.useRef(0);
 
@@ -48,9 +48,9 @@ function App() {
   const setLeftSmallPlayerRef = React.useRef(()=>{});
   const autoplayTimer = React.useRef(null);
   const modalOpenRef = React.useRef(modalOpen);
-  const gridNumNormalized = getRealIndex(currentGridNum, gridDimension, cctvsSelectedArray)
+  const gridNumNormalized = getRealIndex(currentCCTVIndex, gridDimension, cctvsSelectedArray)
 
-  console.log('gridNumNormalized=', gridNumNormalized, currentGridNum, autoPlayIndexRef.current)
+  console.log('gridNumNormalized=', gridNumNormalized, currentCCTVIndex, autoPlayIndexRef.current)
 
   const getNextPlayer = React.useCallback(() => {
     const modalOpen = modalOpenRef.current;
@@ -77,36 +77,43 @@ function App() {
     }
   }, []);
 
-  const getSourceElement = React.useCallback((gridNum) => {
-    const realIndex = getRealIndex(gridNum, gridDimension, cctvsSelectedArray)
-    const cctv = cctvsSelectedArray[realIndex];
+  const getSourceElement = React.useCallback((cctvIndex) => {
+    // const realIndex = getRealIndex(cctvIndex, gridDimension, cctvsSelectedArray)
+    console.log(cctvIndex)
+    const cctv = cctvsSelectedArray[cctvIndex];
     const cctvId = cctv.cctvId;
     const preloadMap = preLoadMapRef.current;
     const preloadElement = preloadMap.get(cctvId.toString());
     return [cctv, preloadElement];
+  }, [cctvsSelectedArray])
+
+  const gridNum2CCTVIndex = React.useCallback((gridNum) => {
+    return getRealIndex(gridNum, gridDimension, cctvsSelectedArray)
   }, [cctvsSelectedArray, gridDimension])
 
-  const maximizeGrid = React.useCallback((gridNum) => {
-    const [cctv, preloadElement] = getSourceElement(gridNum);
+  const maximizeGrid = React.useCallback((cctvIndex) => {
+    const [cctv, preloadElement] = getSourceElement(cctvIndex);
     const modalPlayer = getNextPlayer();
     console.log('!!!', modalOpenRef.current, preloadElement, modalPlayer);
     const ret = mirrorModalPlayer(preloadElement, modalPlayer);
     if(!ret) return false;
     setEnableOverlayModal(enableOverlayGlobal);
     setOverContentlayModal(cctv.title)
-    setCurrentGridNum(gridNum)
+    setCurrentCCTVIndex(cctvIndex)
     // setModalOpen(true);
     // modalOpenRef.current = true;
-    autoPlayIndexRef.current = gridNum;
+    autoPlayIndexRef.current = cctvIndex;
     return true;
   },[getSourceElement, getNextPlayer, enableOverlayGlobal])
 
-  const safeSlide = React.useCallback((indexNumber) => {
+  const safeSlide = React.useCallback((targetIndex) => {
+    const {gridNum, cctvIndex} = targetIndex;
+    const targetCCTVIndex = cctvIndex === undefined ? gridNum2CCTVIndex(gridNum) : cctvIndex;
     const modalOpen = modalOpenRef.current;
     if(swiper.animating){
       return;
     }
-    const ret = maximizeGrid(indexNumber);
+    const ret = maximizeGrid(targetCCTVIndex);
     if(!ret) return false;
     if(modalOpen){
       console.log('!!! slide next!')
@@ -120,17 +127,17 @@ function App() {
     }
     console.log('!!!!current modalOpen = ', modalOpen, swiper.activeIndex, swiper.realIndex)
     return true;
-  }, [maximizeGrid, swiper])
+  }, [gridNum2CCTVIndex, maximizeGrid, swiper])
 
-  useHotkeys('1', () => safeSlide('0'), [safeSlide])
-  useHotkeys('2', () => safeSlide('1'), [safeSlide])
-  useHotkeys('3', () => safeSlide('2'), [safeSlide])
-  useHotkeys('4', () => safeSlide('3'), [safeSlide])
-  useHotkeys('5', () => safeSlide('4'), [safeSlide])
-  useHotkeys('6', () => safeSlide('5'), [safeSlide])
-  useHotkeys('7', () => safeSlide('6'), [safeSlide])
-  useHotkeys('8', () => safeSlide('7'), [safeSlide])
-  useHotkeys('9', () => safeSlide('8'), [safeSlide])
+  useHotkeys('1', () => safeSlide({gridNum: '0'}), [safeSlide])
+  useHotkeys('2', () => safeSlide({gridNum: '1'}), [safeSlide])
+  useHotkeys('3', () => safeSlide({gridNum: '2'}), [safeSlide])
+  useHotkeys('4', () => safeSlide({gridNum: '3'}), [safeSlide])
+  useHotkeys('5', () => safeSlide({gridNum: '4'}), [safeSlide])
+  useHotkeys('6', () => safeSlide({gridNum: '5'}), [safeSlide])
+  useHotkeys('7', () => safeSlide({gridNum: '6'}), [safeSlide])
+  useHotkeys('8', () => safeSlide({gridNum: '7'}), [safeSlide])
+  useHotkeys('9', () => safeSlide({gridNum: '8'}), [safeSlide])
   // useAutoPlay({autoPlay, autoInterval, maximizeGrid, autoPlayIndexRef});
 
   const runAutoPlay = React.useCallback((startAutoPlay=false, autoInterval) => {
@@ -138,11 +145,11 @@ function App() {
       document.title=`CCTV[auto - every ${autoInterval}s]`
       let firstIndex = autoPlayIndexRef.current;
       // maximizeGrid(firstIndex);
-      safeSlide(firstIndex);
+      safeSlide({cctvIndex: firstIndex});
       autoplayTimer.current = setInterval(() => {
         const nextIndex = (autoPlayIndexRef.current + 1) % 9;
         console.log('!!! nextIndex=', nextIndex)
-        const ret = safeSlide(nextIndex);
+        const ret = safeSlide({gridNum: nextIndex});
         // maximizeGrid(nextIndex);
         // swiper.slideNext();
       },autoInterval*1000)
@@ -210,7 +217,7 @@ function App() {
           <ModalBox 
             open={modalOpen} 
             modalOpenRef={modalOpenRef}
-            currentGridNum={gridNumNormalized} 
+            currentCCTVIndex={gridNumNormalized} 
             gridDimension={gridDimension}
             keepMounted={true} 
             autoPlay={autoPlay} 

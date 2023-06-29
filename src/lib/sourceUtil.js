@@ -44,10 +44,10 @@ export const mirrorModalPlayer = (playerNode, modalPlayer) => {
   }
 }
 
-export const getRealIndex = (gridNum, gridDimension, realSelectedArray) => {
+export const getRealIndex = (cctvIndex, gridDimension, realSelectedArray) => {
   const totalGridNum = gridDimension * gridDimension;
   const safeMaxIndex = Math.min(totalGridNum, realSelectedArray.length);
-  return gridNum % safeMaxIndex;
+  return cctvIndex % safeMaxIndex;
 }
 
 export const getYoutubePlaylistUrl = videoId => {
@@ -63,7 +63,7 @@ export const getYoutubePlaylistUrl = videoId => {
         })
         .catch(err => {
             reject(err);
-            alert('Only Support Youtube Live Stream!')
+            alert('Check Youtube Url!. It can be changed!')
         })
     })
 }
