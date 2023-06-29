@@ -8,10 +8,23 @@ const CustomVideo = styled.video`
 `
 
 const MP4Player = (props) => {
-    const {source={}} = props;
+    const {source={}, cctvIndex, currentIndexRef, autoRefresh=false} = props;
     const videoRef = React.useRef(null);
     const [loadDateTime, setLoadDateTime] = React.useState(null);
     const {url} = source;
+
+    const isActive = autoRefresh ? true : cctvIndex === currentIndexRef.current;
+
+    React.useEffect(() => {
+        const reloadTimer = setTimeout(() => {
+            console.log('isActive=', isActive, cctvIndex);
+            setLoadDateTime(Date.now());
+        // }, 3600000 + Math.random()*200000)
+        }, 120000 + Math.random() * 200000)
+        return () => {
+            clearTimeout(reloadTimer);
+        }
+    }, [loadDateTime, isActive, cctvIndex])
 
     const handleLoadedMetadata = React.useCallback(event => {
       console.log(loadDateTime)

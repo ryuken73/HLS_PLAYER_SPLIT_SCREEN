@@ -44,8 +44,11 @@ const HLSPlayer = (props) => {
         aspectRatio='2:1',
         overlayBig=false,
         overlayModal=false,
+        autoRefresh=false,
+        cctvIndex,
+        currentIndexRef
     } = props;
-    console.log('###### source in HLSPlayer:', overlayContent)
+    console.log('###### source in HLSPlayer:', overlayContent, cctvIndex, currentIndexRef)
     console.log('!!! overlayContent in HLSPlayer:', overlayContent)
 
     const {
@@ -69,14 +72,21 @@ const HLSPlayer = (props) => {
     })
     const [lastReloadTime, setLastReloadTime] = React.useState(Date.now());
 
+    const isActive = autoRefresh ? cctvIndex === currentIndexRef.current : true;
     React.useEffect(() => {
+        if(autoRefresh) return;
         const reloadTimer = setTimeout(() => {
+            console.log('#!isActive=', isActive, cctvIndex);
             setLastReloadTime(Date.now());
-        }, 3600000 + Math.random()*200000)
+        // }, 3600000 + Math.random()*200000)
+        }, 120000 + Math.random() * 200000)
+        // }, 12000 );
         return () => {
-            clearTimeout(reloadTimer);
+            if(reloadTimer){
+                clearTimeout(reloadTimer);
+            }
         }
-    }, [lastReloadTime])
+    }, [cctvIndex, isActive, lastReloadTime, autoRefresh])
 
     console.log('&&&&', srcObject)
     
@@ -176,7 +186,7 @@ const HLSPlayer = (props) => {
     },[]);
 
     const onVideoTimeUpdate =  React.useCallback(duration => {
-        channelLog.info("Time updated: ", duration);
+        // channelLog.info("Time updated: ", duration);
     },[]);
 
     const onVideoSeeking =  React.useCallback(duration => {

@@ -24,11 +24,14 @@ const GridVideos = props => {
         gridDimension=2,
         enableOverlayGlobal,
         toggleOverlayGlobal,
+        currentActiveIndex
     } = props;
 
     // const cctvs = [...cctvsInAreas.values()].flat();
+    const currentIndexRef = React.useRef(null);
+    currentIndexRef.current = currentActiveIndex;
 
-    console.log('#', cctvsSelected, enableOverlayGlobal)
+    console.log('#!', cctvsSelected, enableOverlayGlobal, currentIndexRef.current)
 
     const mp4RegExp = /.*\.mp4.*/;
 
@@ -48,7 +51,12 @@ const GridVideos = props => {
                 <Box key={cctv.cctvId} id={cctv.cctvId} ref={addToPreloadMap} overflow="hidden" minWidth="60px" height="100%">
                     <div style={{height: "100%", boxSizing: "border-box", padding:"1px", borderColor:"black", border:"solid 1px black", background:`${autoPlay ? "maroon":"white"}`}}>
                     {mp4RegExp.test(cctv.url) ? (
-                        <MP4Player source={cctv}></MP4Player>
+                        <MP4Player 
+                            source={cctv}
+                            cctvIndex={cctvIndex}
+                            currentIndexRef={currentIndexRef}
+                            autoRefresh={true}
+                        ></MP4Player>
                     ):(
                         <HLSPlayer 
                             width={350}
@@ -61,6 +69,9 @@ const GridVideos = props => {
                             enableOverlay={enableOverlayGlobal}
                             overlayBig={true}
                             overlayContent={cctv.title}
+                            cctvIndex={cctvIndex}
+                            currentIndexRef={currentIndexRef}
+                            autoRefresh={true}
                         ></HLSPlayer>
                     )}
                     </div>

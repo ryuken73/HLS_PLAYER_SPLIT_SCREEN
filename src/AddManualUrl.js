@@ -126,7 +126,7 @@ function AddManualUrl(props) {
     <Container onDragOver={onDragOver} onDrop={onDrop}>
         <Box width="300px">
           {isMP4 ? (
-            <MP4Player source={source}></MP4Player>
+            <MP4Player source={source} autoRefresh={true}></MP4Player>
           ):(
             <HLSPlayer 
               source={source}
@@ -134,6 +134,7 @@ function AddManualUrl(props) {
               fill={true}
               enableOverlay={false}
               setPlayer={setPlayer}
+              autoRefresh={false}
             ></HLSPlayer>
           )}
         </Box>
