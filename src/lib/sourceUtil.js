@@ -30,12 +30,18 @@ export const orderByArea = cctvs => {
 }  
 
 export const mirrorModalPlayer = (playerNode, modalPlayer) => {
-  const videoElement =  playerNode.querySelector('video');
-  console.log('### videoElement:', videoElement, modalPlayer);
-  const mediaStream = videoElement.captureStream();
-  const modalVideoPlayer = modalPlayer.tech().el();
-  modalVideoPlayer.srcObject = null;
-  modalVideoPlayer.srcObject = mediaStream;
+  try {
+    const videoElement =  playerNode.querySelector('video');
+    console.log('### videoElement:', videoElement, modalPlayer);
+    const mediaStream = videoElement.captureStream();
+    const modalVideoPlayer = modalPlayer.tech().el();
+    modalVideoPlayer.srcObject = null;
+    modalVideoPlayer.srcObject = mediaStream;
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 }
 
 export const getRealIndex = (gridNum, gridDimension, realSelectedArray) => {
