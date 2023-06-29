@@ -1,0 +1,428 @@
+[
+    {
+        "num": 54,
+        "title": "인천 소청도_옥상 [해양과학기지]",
+        "cctvId": "SBS018",
+        "url": "http://103.219.124.151:1935/SCC/SCC_ROOF.stream/playlist.m3u8"
+    },
+    {
+        "url": "https://cctvsecn01.ktict.co.kr/6123/EuO4-zC9GmERWxS5ruVvsuZbRLGQXRFqMvhhCwAUaXeqYoMqAbBceJLKYPafJ6lH",
+        "title": "상암사거리-네이버",
+        "cctvId": 1687856137527,
+        "num": 1687856137527
+    },
+    {
+        "num": 40,
+        "title": "인천 [조위관측소]",
+        "cctvId": "SBS004",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/INCHEON/s.m3u8",
+        "lat": 37.451,
+        "lng": 126.592
+    },
+    {
+        "num": 51,
+        "title": "제주 이어도_옥상 [해양과학기지]",
+        "cctvId": "SBS015",
+        "url": "http://103.219.124.151:1935/IEODO/KBS.stream/playlist.m3u8"
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=PaKj6S0eUdg",
+        "title": "서울 광화문대로(유튜브)",
+        "cctvId": 1684386600005,
+        "num": 1684386600005
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=Whf-M6Ut9rE",
+        "title": "호미곷 광장(유튜브)",
+        "cctvId": 1684321899236,
+        "num": 1684321899236
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=XEZadYdknZo",
+        "title": "서울 대림역(유튜브)",
+        "cctvId": 1684320650737,
+        "num": 1684320650737
+    },
+    {
+        "url": " https://cctvsecn01.ktict.co.kr/6515/nRl_o9vnc9MjnUsPb5lG5N8Y4NIupXTOWAVgYB1KliA4JZwsNR2U4b1jwoCoQ5uF",
+        "title": "국토교통부 - 노오지",
+        "cctvId": 1687856593353,
+        "num": 1687856593353
+    },
+    {
+        "num": 49,
+        "title": "경북 포항항 [해무관측소]",
+        "cctvId": "SBS013",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGPOHANG/s.m3u8",
+        "lat": 36.051,
+        "lng": 129.378
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=tdSjYRoJfg4",
+        "title": "강릉 경포대(유튜브)",
+        "cctvId": 1684386570284,
+        "num": 1684386570284
+    },
+    {
+        "num": 37,
+        "title": "전북 군산 [조위관측소]",
+        "cctvId": "SBS001",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/GUNSAN/s.m3u8",
+        "lat": 35.975,
+        "lng": 126.563
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=3PFOu8yaWe0",
+        "title": "서울 잠실대교(유튜브)",
+        "cctvId": 1684320619146,
+        "num": 1684320619146
+    },
+    {
+        "num": 41,
+        "title": "전남 여수 [조위관측소]",
+        "cctvId": "SBS005",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/YEOSU/s.m3u8",
+        "lat": 34.747,
+        "lng": 127.765
+    },
+    {
+        "num": 38,
+        "title": "강원 동해시 묵호 [조위관측소]",
+        "cctvId": "SBS002",
+        "url": "http://115.22.184.229:8080/31829402f3670bff2ac56d786705b5cd/hls/khoa/MUKHO/s.m3u8",
+        "lat": 37.55,
+        "lng": 129.116
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=mWEk8P2l4A4",
+        "title": "제주(유튜브)",
+        "cctvId": 1684385203564,
+        "num": 1684385203564
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=pf9IqUNRvmw",
+        "title": "수원 광교(유튜브)",
+        "cctvId": 1684320741220,
+        "num": 1684320741220
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=W_hTJeL5B6g",
+        "title": "서울 롯데월드(유튜브)",
+        "cctvId": 1684386537580,
+        "num": 1684386537580
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=NtlwZwQx1Ks",
+        "title": "부산 송정(유튜브)",
+        "cctvId": 1684321763680,
+        "num": 1684321763680
+    },
+    {
+        "num": 42,
+        "title": "전남 진도 [조위관측소]",
+        "cctvId": "SBS006",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/JINDO/s.m3u8",
+        "lat": 34.377,
+        "lng": 126.308
+    },
+    {
+        "num": 43,
+        "title": "충남 서산 대산항 [해무관측소]",
+        "cctvId": "SBS007",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGDAESAN/s.m3u8",
+        "lat": 36.977,
+        "lng": 126.304
+    },
+    {
+        "num": 45,
+        "title": "부산 북항 [해무관측소]",
+        "cctvId": "SBS009",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGBUSAN/s.m3u8",
+        "lat": 35.023,
+        "lng": 128.808
+    },
+    {
+        "num": 46,
+        "title": "전남 여수항 [해무관측소]",
+        "cctvId": "SBS010",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGYEOSU/s.m3u8",
+        "lat": 34.754,
+        "lng": 127.752
+    },
+    {
+        "num": 47,
+        "title": "경남 울산항 [해무관측소]",
+        "cctvId": "SBS011",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGULSAN/s.m3u8",
+        "lat": 35.501,
+        "lng": 129.387
+    },
+    {
+        "num": 48,
+        "title": "인천 인천항 [해무관측소]",
+        "cctvId": "SBS012",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGINCHEON/s.m3u8",
+        "lat": 37.379,
+        "lng": 126.616
+    },
+    {
+        "num": 50,
+        "title": "경기 평택당진항 [해무관측소]",
+        "cctvId": "SBS014",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGPTDJ/s.m3u8",
+        "lat": 37.113,
+        "lng": 126.393
+    },
+    {
+        "num": 53,
+        "title": "제주 이어도_북 [해양과학기지]",
+        "cctvId": "SBS017",
+        "url": "http://103.219.124.151:1935/IEODO/HLJB.stream/playlist.m3u8"
+    },
+    {
+        "num": 52,
+        "title": "제주 이어도_접안 [해양과학기지]",
+        "cctvId": "SBS016",
+        "url": "http://103.219.124.151:1935/IEODO/BTLD.stream/playlist.m3u8"
+    },
+    {
+        "num": 55,
+        "title": "인천 소청도_접안 [해양과학기지]",
+        "cctvId": "SBS019",
+        "url": "http://103.219.124.151:1935/SCC/SCC_BTLD.stream/playlist.m3u8"
+    },
+    {
+        "url": "https://cctvsecn01.ktict.co.kr/6126/Mw5JJ_l2QPN5tPtI5olENsFuCkH5bFGBXMCsNJPNKFIDd2z7UNDR7VcZENym8eTS",
+        "title": "증산로-네이버-17:56",
+        "cctvId": 1687856169293,
+        "num": 1687856169293
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=PaKj6S0eUdg",
+        "title": "서울 광화문(유튜브)",
+        "cctvId": 1684320702324,
+        "num": 1684320702324
+    },
+    {
+        "url": "https://cctvsecn01.ktict.co.kr/701/9tkRQ-8TJDkiL8tket_NxzY0trvBsYik5d4K_lnBMjvbAh0ld3Zh1AUCSRBEPiuf",
+        "title": "방화대교",
+        "cctvId": 1687856194494,
+        "num": 1687856194494
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=nfuqG9zlcEA",
+        "title": "서울 마포대교(유튜브)",
+        "cctvId": 1688002619623,
+        "num": 1688002619623
+    },
+    {
+        "url": "https://cctvsecn01.ktict.co.kr/6219/11Xilpz9Q20vHNnOrjdjRwYPKwToTI5VFBGbZzsIUZ1xmVnm_jdIRz5d5R1z2wHl",
+        "title": "화곡사거리",
+        "cctvId": 1688003442509,
+        "num": 1688003442509
+    },
+    {
+        "url": "https://cctvsecn01.ktict.co.kr:8082/ustrm01101vod/7560.mp4?wmsAuthSign=c2VydmVyX3RpbWU9Ni8yNy8yMDIzIDM6NDA6MzggUE0maGFzaF92YWx1ZT1KVEZhK2RRTkF2aFpnakdDSmc3MWN3PT0mdmFsaWRtaW51dGVzPTEyMCZpZD03NTYw",
+        "title": "풍무-MP4-UTIC",
+        "cctvId": 1687879111356,
+        "num": 1687879111356
+    },
+    {
+        "url": "https://cctvsecn01.ktict.co.kr/6220/Xlv6BTfFL-q1rA0s_fMqpENwthqiZMOM1G65zsMzJb9yvbHFCypHn1WxIhBLgf94",
+        "title": "발산역-UTIC",
+        "cctvId": 1687856474657,
+        "num": 1687856474657
+    },
+    {
+        "num": 54,
+        "title": "인천 소청도_옥상 [해양과학기지]",
+        "cctvId": "SBS018",
+        "url": "http://103.219.124.151:1935/SCC/SCC_ROOF.stream/playlist.m3u8"
+    },
+    {
+        "url": "https://cctvsecn01.ktict.co.kr/6123/EuO4-zC9GmERWxS5ruVvsuZbRLGQXRFqMvhhCwAUaXeqYoMqAbBceJLKYPafJ6lH",
+        "title": "상암사거리-네이버",
+        "cctvId": 1687856137527,
+        "num": 1687856137527
+    },
+    {
+        "num": 40,
+        "title": "인천 [조위관측소]",
+        "cctvId": "SBS004",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/INCHEON/s.m3u8",
+        "lat": 37.451,
+        "lng": 126.592
+    },
+    {
+        "num": 51,
+        "title": "제주 이어도_옥상 [해양과학기지]",
+        "cctvId": "SBS015",
+        "url": "http://103.219.124.151:1935/IEODO/KBS.stream/playlist.m3u8"
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=PaKj6S0eUdg",
+        "title": "서울 광화문대로(유튜브)",
+        "cctvId": 1684386600005,
+        "num": 1684386600005
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=Whf-M6Ut9rE",
+        "title": "호미곷 광장(유튜브)",
+        "cctvId": 1684321899236,
+        "num": 1684321899236
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=XEZadYdknZo",
+        "title": "서울 대림역(유튜브)",
+        "cctvId": 1684320650737,
+        "num": 1684320650737
+    },
+    {
+        "url": " https://cctvsecn01.ktict.co.kr/6515/nRl_o9vnc9MjnUsPb5lG5N8Y4NIupXTOWAVgYB1KliA4JZwsNR2U4b1jwoCoQ5uF",
+        "title": "국토교통부 - 노오지",
+        "cctvId": 1687856593353,
+        "num": 1687856593353
+    },
+    {
+        "num": 49,
+        "title": "경북 포항항 [해무관측소]",
+        "cctvId": "SBS013",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGPOHANG/s.m3u8",
+        "lat": 36.051,
+        "lng": 129.378
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=tdSjYRoJfg4",
+        "title": "강릉 경포대(유튜브)",
+        "cctvId": 1684386570284,
+        "num": 1684386570284
+    },
+    {
+        "num": 37,
+        "title": "전북 군산 [조위관측소]",
+        "cctvId": "SBS001",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/GUNSAN/s.m3u8",
+        "lat": 35.975,
+        "lng": 126.563
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=3PFOu8yaWe0",
+        "title": "서울 잠실대교(유튜브)",
+        "cctvId": 1684320619146,
+        "num": 1684320619146
+    },
+    {
+        "num": 41,
+        "title": "전남 여수 [조위관측소]",
+        "cctvId": "SBS005",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/YEOSU/s.m3u8",
+        "lat": 34.747,
+        "lng": 127.765
+    },
+    {
+        "num": 38,
+        "title": "강원 동해시 묵호 [조위관측소]",
+        "cctvId": "SBS002",
+        "url": "http://115.22.184.229:8080/31829402f3670bff2ac56d786705b5cd/hls/khoa/MUKHO/s.m3u8",
+        "lat": 37.55,
+        "lng": 129.116
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=mWEk8P2l4A4",
+        "title": "제주(유튜브)",
+        "cctvId": 1684385203564,
+        "num": 1684385203564
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=pf9IqUNRvmw",
+        "title": "수원 광교(유튜브)",
+        "cctvId": 1684320741220,
+        "num": 1684320741220
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=W_hTJeL5B6g",
+        "title": "서울 롯데월드(유튜브)",
+        "cctvId": 1684386537580,
+        "num": 1684386537580
+    },
+    {
+        "url": "https://www.youtube.com/watch?v=NtlwZwQx1Ks",
+        "title": "부산 송정(유튜브)",
+        "cctvId": 1684321763680,
+        "num": 1684321763680
+    },
+    {
+        "num": 42,
+        "title": "전남 진도 [조위관측소]",
+        "cctvId": "SBS006",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/JINDO/s.m3u8",
+        "lat": 34.377,
+        "lng": 126.308
+    },
+    {
+        "num": 43,
+        "title": "충남 서산 대산항 [해무관측소]",
+        "cctvId": "SBS007",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGDAESAN/s.m3u8",
+        "lat": 36.977,
+        "lng": 126.304
+    },
+    {
+        "num": 45,
+        "title": "부산 북항 [해무관측소]",
+        "cctvId": "SBS009",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGBUSAN/s.m3u8",
+        "lat": 35.023,
+        "lng": 128.808
+    },
+    {
+        "num": 46,
+        "title": "전남 여수항 [해무관측소]",
+        "cctvId": "SBS010",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGYEOSU/s.m3u8",
+        "lat": 34.754,
+        "lng": 127.752
+    },
+    {
+        "num": 47,
+        "title": "경남 울산항 [해무관측소]",
+        "cctvId": "SBS011",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGULSAN/s.m3u8",
+        "lat": 35.501,
+        "lng": 129.387
+    },
+    {
+        "num": 48,
+        "title": "인천 인천항 [해무관측소]",
+        "cctvId": "SBS012",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGINCHEON/s.m3u8",
+        "lat": 37.379,
+        "lng": 126.616
+    },
+    {
+        "num": 50,
+        "title": "경기 평택당진항 [해무관측소]",
+        "cctvId": "SBS014",
+        "url": "http://115.22.184.229:8080/aa5962166b8260b3dce99a413d515fd0/hls/khoa/SEAFOGPTDJ/s.m3u8",
+        "lat": 37.113,
+        "lng": 126.393
+    },
+    {
+        "num": 53,
+        "title": "제주 이어도_북 [해양과학기지]",
+        "cctvId": "SBS017",
+        "url": "http://103.219.124.151:1935/IEODO/HLJB.stream/playlist.m3u8"
+    },
+    {
+        "num": 52,
+        "title": "제주 이어도_접안 [해양과학기지]",
+        "cctvId": "SBS016",
+        "url": "http://103.219.124.151:1935/IEODO/BTLD.stream/playlist.m3u8"
+    },
+    {
+        "num": 56,
+        "title": "인천 소청도_북 [해양과학기지]",
+        "cctvId": "SBS020",
+        "url": "http://103.219.124.151:1935/SCC/SCC_NORTH.stream/playlist.m3u8"
+    }
+]
