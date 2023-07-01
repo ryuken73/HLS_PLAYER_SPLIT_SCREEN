@@ -74,13 +74,14 @@ const HLSPlayer = (props) => {
 
     const isActive = autoRefresh ? cctvIndex === currentIndexRef.current : true;
     React.useEffect(() => {
-        if(autoRefresh) return;
+        return;
+        if(isActive) return;
         const reloadTimer = setTimeout(() => {
             console.log('#!isActive=', isActive, cctvIndex);
             setLastReloadTime(Date.now());
         // }, 3600000 + Math.random()*200000)
-        }, 120000 + Math.random() * 200000)
-        // }, 12000 );
+        // }, 12000 + Math.random() * 200000)
+        }, 10000 );
         return () => {
             if(reloadTimer){
                 clearTimeout(reloadTimer);
@@ -146,7 +147,11 @@ const HLSPlayer = (props) => {
     const channelLog = console;
     const onPlayerReady = React.useCallback((player) => {
         channelLog.info("Player is ready");
-        setPlayer(player);
+        if(autoRefresh === true){
+            setPlayer(cctvIndex, player);
+        } else {
+            setPlayer(20, player);
+        }
         player.muted(true);
         const qualityLevels = player.qualityLevels();
         const youtubeRegExp = /:\/\/www\.youtube\./;
@@ -160,7 +165,7 @@ const HLSPlayer = (props) => {
                 console.log(qualityLevel)
             })
         }
-    }, [channelLog, setPlayer, source.url]);
+    }, [autoRefresh, cctvIndex, channelLog, setPlayer, source.url]);
     // const onPlayerReady = player => {
     //     channelLog.info("Player is ready");
     //     setPlayer(player);

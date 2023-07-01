@@ -8,7 +8,7 @@ const CustomVideo = styled.video`
 `
 
 const MP4Player = (props) => {
-    const {source={}, cctvIndex, currentIndexRef, autoRefresh=false} = props;
+    const {source={}, cctvIndex, currentIndexRef, autoRefresh=false, setPlayer} = props;
     const videoRef = React.useRef(null);
     const [loadDateTime, setLoadDateTime] = React.useState(null);
     const {url} = source;
@@ -35,6 +35,7 @@ const MP4Player = (props) => {
       if(!isNaN(videoRef.current.duration)){
           videoRef.current.play();
       }
+      setPlayer(cctvIndex, videoRef.current)
     }, [loadDateTime]);
 
     const reloadPlayer = React.useCallback(() => {
@@ -61,7 +62,7 @@ const MP4Player = (props) => {
     }, [handleLoadedMetadata, reloadPlayer]) 
 
   return (
-      <CustomVideo ref={videoRef} src={url} crossOrigin="anonymous"></CustomVideo>
+      <CustomVideo muted ref={videoRef} src={url} crossOrigin="anonymous"></CustomVideo>
   )
 }
 

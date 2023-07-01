@@ -24,14 +24,15 @@ const GridVideos = props => {
         gridDimension=2,
         enableOverlayGlobal,
         toggleOverlayGlobal,
-        currentActiveIndex
+        currentActiveIndex,
+        cctvPlayersRef
     } = props;
 
     // const cctvs = [...cctvsInAreas.values()].flat();
     const currentIndexRef = React.useRef(null);
     currentIndexRef.current = currentActiveIndex;
 
-    console.log('#!', cctvsSelected, enableOverlayGlobal, currentIndexRef.current)
+    console.log('#!Players',cctvPlayersRef.current, cctvsSelected, enableOverlayGlobal, currentIndexRef.current)
 
     const mp4RegExp = /.*\.mp4.*/;
 
@@ -45,6 +46,10 @@ const GridVideos = props => {
     useHotkeys('a', () => toggleAutoPlay(), [toggleAutoPlay])
     useHotkeys('t', () => toggleOverlayGlobal(), [toggleOverlayGlobal])
 
+    const setCCTVPlayerRef = React.useCallback((cctvIndex, player) => {
+        cctvPlayersRef.current[cctvIndex] = player;
+    }, [cctvPlayersRef])
+
     return (
         <Container dimension={gridDimension}>
             {cctvsSelected.map((cctv,cctvIndex) => (
@@ -56,6 +61,7 @@ const GridVideos = props => {
                             cctvIndex={cctvIndex}
                             currentIndexRef={currentIndexRef}
                             autoRefresh={true}
+                            setPlayer={setCCTVPlayerRef}
                         ></MP4Player>
                     ):(
                         <HLSPlayer 
@@ -65,7 +71,7 @@ const GridVideos = props => {
                             aspectRatio=""
                             fill={true}
                             source={cctv}
-                            setPlayer={setPlayer}
+                            setPlayer={setCCTVPlayerRef}
                             enableOverlay={enableOverlayGlobal}
                             overlayBig={true}
                             overlayContent={cctv.title}
