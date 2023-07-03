@@ -91,7 +91,7 @@ const isPlayerPlaying = (player) => {
     }
 };
 
-export const getNonPausedPlayerIndex = (nextPlayerIndex, cctvPlayersRef) => {
+export const getNonPausedPlayerIndex = (nextPlayerIndex, cctvPlayersRef, reloadPlayerComponent=()=>{}) => {
     let nextIndex = nextPlayerIndex;
     console.log('1.getNonPausedPlayerIndex: nextIndex=', nextIndex);
     let loopCount = 0;
@@ -100,6 +100,7 @@ export const getNonPausedPlayerIndex = (nextPlayerIndex, cctvPlayersRef) => {
         const player = cctvPlayersRef.current[nextIndex];
         if(player === undefined){
             console.log('x.!getNonPausedPlayerIndex player is undefined');
+            reloadPlayerComponent(nextIndex)
             nextIndex = (nextIndex + 1) % cctvPlayersRef.current.length;
             continue;
         }
@@ -111,6 +112,7 @@ export const getNonPausedPlayerIndex = (nextPlayerIndex, cctvPlayersRef) => {
         // if(isPlaying){
             break;
         }
+        reloadPlayerComponent(nextIndex)
         console.log('3.!getNonPausedPlayerIndex paused Index:', nextIndex)
         nextIndex = (nextIndex + 1) % cctvPlayersRef.current.length;
         loopCount++;

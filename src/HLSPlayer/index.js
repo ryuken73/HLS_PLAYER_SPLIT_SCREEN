@@ -46,9 +46,10 @@ const HLSPlayer = (props) => {
         overlayModal=false,
         autoRefresh=false,
         cctvIndex,
-        currentIndexRef
+        currentIndexRef,
+        lastLoaded
     } = props;
-    console.log('###### source in HLSPlayer:', overlayContent, cctvIndex, currentIndexRef)
+    console.log('###### source in HLSPlayer:', autoRefresh, overlayContent, cctvIndex, currentIndexRef, lastLoaded)
     console.log('!!! overlayContent in HLSPlayer:', overlayContent)
 
     const {
@@ -124,7 +125,7 @@ const HLSPlayer = (props) => {
             })
             }
         }
-    }, [source, lastReloadTime]);
+    }, [source, lastReloadTime, lastLoaded]);
 
     // const srcObject = {
     //     src: source.url,

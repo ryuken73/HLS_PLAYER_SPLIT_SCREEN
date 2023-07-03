@@ -13,6 +13,7 @@ import useLocalStorage from './hooks/useLocalStorage';
 // import useAutoPlay from './hooks/useAutoPlay';
 import SwiperControl from './SwiperControl';
 import { getRealIndex, mirrorModalPlayer, getNonPausedPlayerIndex } from './lib/sourceUtil';
+import { replace } from './lib/arrayUtil';
 import "swiper/css";
  
 const KEY_OPTIONS = 'hlsCCTVOptions';
@@ -39,6 +40,7 @@ function App() {
   const [enableOverlayGlobal, setEnableOverlayGlobal] = React.useState(true);
   const [checkedCCTVId, setCheckedCCTVId] = React.useState('');
   const [currentCCTVIndex, setCurrentCCTVIndex] = React.useState(null);
+  const [cctvLastLoadedTime, setLastLoadedTime] = React.useState([]);
   const [swiper, setSwiper] = React.useState(null);
   const modalPlayerNumRef = React.useRef(0);
 
@@ -141,6 +143,26 @@ function App() {
   useHotkeys('9', () => safeSlide({gridNum: '8'}), [safeSlide])
   // useAutoPlay({autoPlay, autoInterval, maximizeGrid, cctvIndexRef});
 
+  const reloadPlayerComponent = React.useCallback((cctvIndex) => {
+    console.log('getNon: reload Player:', cctvIndex)
+    setLastLoadedTime(lastLoadedTime => {
+      const now = Date.now();
+      return replace(lastLoadedTime).index(cctvIndex).value(now);
+    })
+  }, [setLastLoadedTime])
+
+  // React.useEffect(() => {
+  //   let timer;
+  //   timer = setInterval(() => {
+  //     for(let i=0;i<9;i++){
+  //       reloadPlayerComponent(i)
+  //     }
+  //   }, 10000)
+  //   return () => {
+  //     clearInterval(timer);
+  //   }
+  // }, [reloadPlayerComponent])
+
   const runAutoPlay = React.useCallback((startAutoPlay=false, autoInterval) => {
     if(startAutoPlay){
       document.title=`CCTV[auto - every ${autoInterval}s]`
@@ -150,8 +172,7 @@ function App() {
       autoplayTimer.current = setInterval(() => {
         // const nextIndex = (cctvIndexRef.current + 1) % 9;
         const nextPlayerIndex = (cctvIndexRef.current + 1) % (cctvPlayersRef.current.length);
-        const nextIndex = getNonPausedPlayerIndex(nextPlayerIndex, cctvPlayersRef);
-
+        const nextIndex = getNonPausedPlayerIndex(nextPlayerIndex, cctvPlayersRef, reloadPlayerComponent);
         // console.log('!!! nextIndex=', nextIndex, cctvPlayersRef.current[nextIndex].paused())
         const ret = safeSlide({gridNum: nextIndex});
         // maximizeGrid(nextIndex);
@@ -161,7 +182,7 @@ function App() {
       document.title="CCTV"
       clearInterval(autoplayTimer.current);
     }
-  }, [safeSlide, cctvPlayersRef])
+  }, [safeSlide, reloadPlayerComponent])
 
   const toggleAutoPlay = React.useCallback(() => {
     setAutoPlay(autoPlay => {
@@ -218,6 +239,7 @@ function App() {
             toggleOverlayGlobal={toggleOverlayGlobal}
             currentActiveIndex={gridNumNormalized}
             cctvPlayersRef={cctvPlayersRef}
+            cctvLastLoadedTime={cctvLastLoadedTime}
           ></GridVideos>
           <ModalBox 
             open={modalOpen} 

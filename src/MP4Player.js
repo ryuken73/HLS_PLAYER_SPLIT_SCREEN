@@ -8,26 +8,33 @@ const CustomVideo = styled.video`
 `
 
 const MP4Player = (props) => {
-    const {source={}, cctvIndex, currentIndexRef, autoRefresh=false, setPlayer} = props;
+    const {source={}, cctvIndex, currentIndexRef, autoRefresh=false, setPlayer, lastLoaded} = props;
     const videoRef = React.useRef(null);
-    const [loadDateTime, setLoadDateTime] = React.useState(null);
+    // const [loadDateTime, setLoadDateTime] = React.useState(null);
     const {url} = source;
 
-    const isActive = autoRefresh ? true : cctvIndex === currentIndexRef.current;
+    // const isActive = autoRefresh ? true : cctvIndex === currentIndexRef.current;
 
+    // React.useEffect(() => {
+    //     const reloadTimer = setTimeout(() => {
+    //         console.log('isActive=', isActive, cctvIndex);
+    //         setLoadDateTime(Date.now());
+    //     // }, 3600000 + Math.random()*200000)
+    //     }, 120000 + Math.random() * 200000)
+    //     return () => {
+    //         clearTimeout(reloadTimer);
+    //     }
+    // }, [loadDateTime, isActive, cctvIndex])
     React.useEffect(() => {
-        const reloadTimer = setTimeout(() => {
-            console.log('isActive=', isActive, cctvIndex);
-            setLoadDateTime(Date.now());
-        // }, 3600000 + Math.random()*200000)
-        }, 120000 + Math.random() * 200000)
-        return () => {
-            clearTimeout(reloadTimer);
-        }
-    }, [loadDateTime, isActive, cctvIndex])
+      console.log('reload mp4 player:', lastLoaded)
+      if(videoRef.current === null){
+        return;
+      }
+      videoRef.current.load();
+    }, [lastLoaded]);
 
     const handleLoadedMetadata = React.useCallback(event => {
-      console.log(loadDateTime)
+      console.log(lastLoaded)
       if(videoRef.current === null){
         return;
       }
@@ -36,30 +43,21 @@ const MP4Player = (props) => {
           videoRef.current.play();
       }
       setPlayer(cctvIndex, videoRef.current)
-    }, [loadDateTime]);
-
-    const reloadPlayer = React.useCallback(() => {
-      console.log('ended')
-      if(videoRef.current === null){
-        return;
-      }
-      setLoadDateTime(Date.now());
-      videoRef.current.load();
-    }, []);
+    }, [cctvIndex, lastLoaded, setPlayer]);
 
     React.useEffect(() => {
       if(videoRef.current === null){
         return;
       }
       videoRef.current.addEventListener('loadedmetadata', handleLoadedMetadata)
-      videoRef.current.addEventListener('ended', reloadPlayer)
+      // videoRef.current.addEventListener('ended', reloadPlayer)
       return () => {
         if(videoRef.current){
             videoRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata)
-            videoRef.current.removeEventListener('ended', reloadPlayer)
+            // videoRef.current.removeEventListener('ended', reloadPlayer)
         }
       }
-    }, [handleLoadedMetadata, reloadPlayer]) 
+    }, [handleLoadedMetadata]) 
 
   return (
       <CustomVideo muted ref={videoRef} src={url} crossOrigin="anonymous"></CustomVideo>

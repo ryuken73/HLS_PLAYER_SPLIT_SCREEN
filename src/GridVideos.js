@@ -25,7 +25,9 @@ const GridVideos = props => {
         enableOverlayGlobal,
         toggleOverlayGlobal,
         currentActiveIndex,
-        cctvPlayersRef
+        cctvPlayersRef,
+        cctvLastLoadedTime,
+        reloadPlayerComponent
     } = props;
 
     // const cctvs = [...cctvsInAreas.values()].flat();
@@ -62,6 +64,8 @@ const GridVideos = props => {
                             currentIndexRef={currentIndexRef}
                             autoRefresh={true}
                             setPlayer={setCCTVPlayerRef}
+                            lastLoaded={cctvLastLoadedTime[cctvIndex]}
+                            reloadPlayerComponent={reloadPlayerComponent}
                         ></MP4Player>
                     ):(
                         <HLSPlayer 
@@ -78,6 +82,7 @@ const GridVideos = props => {
                             cctvIndex={cctvIndex}
                             currentIndexRef={currentIndexRef}
                             autoRefresh={true}
+                            lastLoaded={cctvLastLoadedTime[cctvIndex]}
                         ></HLSPlayer>
                     )}
                     </div>
