@@ -69,6 +69,7 @@ const GridVideos = props => {
                         ></MP4Player>
                     ):(
                         <HLSPlayer 
+                            player={cctvPlayersRef.current[cctvIndex]}
                             width={350}
                             height={200}
                             fluid={false}

@@ -9,12 +9,13 @@ const Container = styled.div`
   overflow: hidden;
   width: 100%;
   height: 100%;
+  position: relative;
 `
 const NumDisplay = styled.div`
   position: absolute;
   top:10px;
   left:10px;
-  background: white;
+  background: black;
   width: 100px;
   z-index: 9999;
 `
@@ -66,6 +67,7 @@ const HLSPlayer = (props) => {
     const {activeSource} = props;
     const {setPlayer} = props;
 
+    const [currentTime, setCurrentTime] = React.useState(0);
     const [srcObject, setSrcObject] = React.useState({
         src: source.url,
         type,
@@ -125,7 +127,7 @@ const HLSPlayer = (props) => {
             })
             }
         }
-    }, [source, lastReloadTime, lastLoaded]);
+    }, [source, lastReloadTime, lastLoaded, player, cctvIndex]);
 
     // const srcObject = {
     //     src: source.url,
@@ -166,12 +168,20 @@ const HLSPlayer = (props) => {
                 console.log(qualityLevel)
             })
         }
+        // const timer = setInterval(() => {
+        //   if(player === null) return;
+        //   console.log('current time=', cctvIndex, player);
+        //   setCurrentTime(player.currentTime());
+        // },1000)
+        // return () => {
+        //   clearInterval(timer);
+        // }
     }, [autoRefresh, cctvIndex, channelLog, setPlayer, source.url]);
     // const onPlayerReady = player => {
     //     channelLog.info("Player is ready");
     //     setPlayer(player);
     //     player.muted(true);
-    //     const qualityLevels = player.qualityLevels();
+    //     const qualityLehvels = player.qualityLevels();
     //     if(qualityLevels) {
     //         qualityLevels.on('addqualitylevel', event => {
     //             const qualityLevel = event.qualityLevel;
@@ -263,9 +273,33 @@ const HLSPlayer = (props) => {
         }
     }
 
+    React.useEffect(() => {
+      const timer = setInterval(() => {
+        if(player === null) {
+          clearInterval(timer);
+          return;
+        }
+        console.log('current time=', cctvIndex, player);
+        setCurrentTime(player.currentTime());
+      },2000)
+      return () => {
+        clearInterval(timer);
+      }
+    }, [cctvIndex, lastReloadTime, player])
+
+    let RELOAD_COUNTDOWN = 0;
+    if(autoRefresh) {
+      const RELOAD_INTERVAL_SEC = 30;
+      RELOAD_COUNTDOWN = Math.ceil(RELOAD_INTERVAL_SEC - currentTime);
+      if(RELOAD_COUNTDOWN <= 0){
+        setLastReloadTime(Date.now());
+        setCurrentTime(0);
+      }
+    }
+
     return (
       <Container>
-        {/* <NumDisplay>{playerNum}</NumDisplay> */}
+        <NumDisplay>{RELOAD_COUNTDOWN}</NumDisplay>
         <VideoPlayer
             controls={controls}
             src={srcObject}
