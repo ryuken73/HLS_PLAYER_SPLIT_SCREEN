@@ -16,6 +16,12 @@ import {moveTo, remove, add} from './lib/arrayUtil';
 
 const scroll = 'paper';
 const columnNames =  ['dragFrom', 'dropOn'];
+const Row = styled.div`
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    margin-right: 10px;
+`
 
 const ConfigDialog = props => {
     const {
@@ -28,7 +34,6 @@ const ConfigDialog = props => {
         setDialogOpen=()=>{},
         checkedCCTVId,
         setCheckedCCTVId,
-
         optionTitle="Select CCTVs",
         // columnData={},
         // columnOrder=[],
@@ -40,7 +45,11 @@ const ConfigDialog = props => {
         // setGroupByArea=()=>{},
         preload=false,
         setOptionsNSave=()=>{},
-        addManualUrl
+        addManualUrl,
+        setRefreshMode,
+        refreshMode,
+        setRefreshInterval,
+        refreshInterval
         // setPreload=()=>{}
         // cctvsInDropOn=[]
     } = props;
@@ -134,6 +143,26 @@ const ConfigDialog = props => {
         setOptionsNSave('autoInterval', event.target.value)
     },[setOptionsNSave])
 
+    const onChangeMode = React.useCallback((event) => {
+        if(event.target.checked){
+            setRefreshMode('auto')
+        } else {
+            setRefreshMode('none')
+        }
+    }, [setRefreshMode])
+
+    const onChangeInterval = React.useCallback((event) => {
+        const interval = parseInt(event.target.value);
+        // eslint-disable-next-line use-isnan
+        if(isNaN(interval)){
+            setRefreshInterval(0);
+            return;
+        }
+        setRefreshInterval(interval);
+    }, [setRefreshInterval])
+
+    const refreshInputDisabled = refreshMode !== 'auto'
+
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Dialog
@@ -150,6 +179,24 @@ const ConfigDialog = props => {
                         {optionTitle}
                         <Box style={{marginLeft:'auto'}}>
                         </Box>
+                        {displayGrid &&
+                            <Row>
+                                <input 
+                                    onChange={onChangeMode} 
+                                    type="checkbox" 
+                                    checked={!refreshInputDisabled}
+                                />
+                                <Box sx={{}}>auto refresh</Box>
+                                {!refreshInputDisabled && (
+                                    <input 
+                                        disabled={refreshInputDisabled} 
+                                        style={{height: '85%', marginLeft: '5px'}}
+                                        onChange={onChangeInterval}
+                                        value={refreshInterval}
+                                    ></input>
+                                )}
+                            </Row>
+                        }
                         {displayGrid && 
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"

@@ -26,6 +26,8 @@ function App() {
   const [notSelectedSaved, saveNotSelectedCCTVs] = useLocalStorage(KEY_NOT_SELECT_SAVED,[]);
   const INITIAL_GRID_DIMENSION = savedOptions.gridDimension === undefined ? 2 : savedOptions.gridDimension;
   const INITIAL_AUTO_INTERVAL = savedOptions.autoInterval === undefined ? 10 : savedOptions.autoInterval;
+  const INITIAL_REFRESH_MODE = savedOptions.refreshMode === undefined ? 'auto' : savedOptions.refreshMode;
+  const INITIAL_REFRESH_INTERVAL = savedOptions.refreshInterval === undefined ? 60 : savedOptions.refreshInterval
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -36,11 +38,13 @@ function App() {
   const [cctvsNotSelectedArray, setCCTVsNotSelectedArray] = React.useState(notSelectedSaved);
   const [cctvsSelectedArray, setCCTVsSelectedAray] = React.useState(selectedSaved);
   const [enableOverlayModal, setEnableOverlayModal] = React.useState(false);
-  const [overlayContentModal, setOverContentlayModal] = React.useState('');
+  const [overlayContentModal, setOverContentlayModal] = React.useState(['','']);
   const [enableOverlayGlobal, setEnableOverlayGlobal] = React.useState(true);
   const [checkedCCTVId, setCheckedCCTVId] = React.useState('');
   const [currentCCTVIndex, setCurrentCCTVIndex] = React.useState(null);
   const [cctvLastLoadedTime, setLastLoadedTime] = React.useState([]);
+  const [refreshMode, setRefreshMode] = React.useState(INITIAL_REFRESH_MODE);
+  const [refreshInterval, setRefreshInterval] = React.useState(INITIAL_REFRESH_INTERVAL);
   const [swiper, setSwiper] = React.useState(null);
   const modalPlayerNumRef = React.useRef(0);
 
@@ -68,16 +72,14 @@ function App() {
     return modalPlayers[nextNum]
   }, [modalPlayers])
 
-  const initModalPlayersIndex = React.useCallback(index => {
-    return (cctvIndex, player) => {
-      console.log('^^^^', index, player)
-      setModalPlayers(players => {
-        const newPlayers = [...players];
-        newPlayers[index] = player;
-        console.log('!!!', newPlayers)
-        return newPlayers
-      })
-    }
+  const initModalPlayersIndex = React.useCallback((cctvIndex, player, modalIndex) => {
+    console.log('^^^^', cctvIndex, player, modalIndex)
+    setModalPlayers(players => {
+      const newPlayers = [...players];
+      newPlayers[modalIndex] = player;
+      console.log('!!!', newPlayers)
+      return newPlayers
+    })
   }, []);
 
   const getSourceElement = React.useCallback((cctvIndex) => {
@@ -95,17 +97,25 @@ function App() {
   }, [cctvsSelectedArray, gridDimension])
 
   const maximizeGrid = React.useCallback((cctvIndex) => {
+    console.log('1s. start maximizeGrid')
     const [cctv, preloadElement] = getSourceElement(cctvIndex);
     const modalPlayer = getNextPlayer();
     console.log('!!!', modalOpenRef.current, preloadElement, modalPlayer);
+    console.log('2s. start mirrorModalPlayer')
     const ret = mirrorModalPlayer(preloadElement, modalPlayer);
+    console.log('2e. start-end mirrorModalPlayer ret=', ret);
     if(!ret) return false;
     setEnableOverlayModal(enableOverlayGlobal);
-    setOverContentlayModal(cctv.title)
+    setOverContentlayModal(overlayContents => {
+      const newOverlayContents = [...overlayContents];
+      newOverlayContents[modalPlayerNumRef.current] = cctv.title;
+      return newOverlayContents
+    })
     setCurrentCCTVIndex(cctvIndex)
     // setModalOpen(true);
     // modalOpenRef.current = true;
     cctvIndexRef.current = cctvIndex;
+    console.log('1e. start-end maximizeGrid')
     return true;
   },[getSourceElement, getNextPlayer, enableOverlayGlobal])
 
@@ -119,10 +129,10 @@ function App() {
     const ret = maximizeGrid(targetCCTVIndex);
     if(!ret) return false;
     if(modalOpen){
-      console.log('!!! slide next!')
+      console.log('start slide next!')
       swiper.slideNext();
     } else {
-      console.log('!!! slide to 0')
+      console.log('start slide to 0')
       // swiper.slideTo(0);
       swiper.slideToLoop(0);
       setModalOpen(true);
@@ -240,6 +250,8 @@ function App() {
             currentActiveIndex={gridNumNormalized}
             cctvPlayersRef={cctvPlayersRef}
             cctvLastLoadedTime={cctvLastLoadedTime}
+            refreshMode={refreshMode}
+            refreshInterval={refreshInterval}
           ></GridVideos>
           <ModalBox 
             open={modalOpen} 
@@ -266,10 +278,10 @@ function App() {
                   <HLSPlayer 
                     fill={true}
                     responsive={true}
-                    setPlayer={initModalPlayersIndex(index)}
+                    setPlayer={initModalPlayersIndex}
                     aspectRatio={"16:9"}
                     enableOverlay={enableOverlayModal}
-                    overlayContent={overlayContentModal}
+                    overlayContent={overlayContentModal[index]}
                     overlayBig={true}
                     overlayModal={true}
                     playerNum={index}
@@ -292,6 +304,10 @@ function App() {
             setDialogOpen={setDialogOpen}
             checkedCCTVId={checkedCCTVId}
             setCheckedCCTVId={setCheckedCCTVId}
+            setRefreshMode={setRefreshMode}
+            refreshMode={refreshMode}
+            setRefreshInterval={setRefreshInterval}
+            refreshInterval={refreshInterval}
           ></ConfigDialog>
         </Box>
       </header>

@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import VideoPlayer from './VideoPlayer';
 import styled from 'styled-components';
 import {getYoutubeId, getYoutubePlaylistUrl} from '../lib/sourceUtil';
+import usePrevious from '../hooks/usePrevious';
 // import { useSwiper } from 'swiper/react';
 
 const Container = styled.div`
@@ -13,12 +14,20 @@ const Container = styled.div`
 `
 const NumDisplay = styled.div`
   position: absolute;
-  top:10px;
-  left:10px;
+  top: ${props => (props.position === 'topLeft' || props.position === 'topRight') && '10px'};
+  bottom: ${props => (props.position === 'bottomLeft' || props.position === 'bottomRight') && '10px'};
+  left: ${props => (props.position === 'topLeft' || props.position === 'bottomLeft') && '10px'};
+  right: ${props => (props.position === 'topRight' || props.position === 'bottomRight') && '10px'};
   background: black;
-  width: 100px;
-  z-index: 9999;
+  width: 80px;
+  z-index: 1000;
 `
+const CHECK_INTERNAL_SEC = 2;
+
+const getRandomCountdown = refreshInterval => {
+    return Math.ceil(refreshInterval + Math.random() * 20);
+};
+
 const find720p = (srcArray) => {
     const src720p = srcArray.find(src => {
         const mp4MimeType = "video/mp4"
@@ -48,10 +57,12 @@ const HLSPlayer = (props) => {
         autoRefresh=false,
         cctvIndex,
         currentIndexRef,
-        lastLoaded
+        lastLoaded,
+        refreshMode,
+        refreshInterval
     } = props;
     console.log('###### source in HLSPlayer:', autoRefresh, overlayContent, cctvIndex, currentIndexRef, lastLoaded)
-    console.log('!!! overlayContent in HLSPlayer:', overlayContent)
+    console.log('!!! overlayContent in HLSPlayer:',playerNum, overlayContent)
 
     const {
         width="100%",
@@ -67,7 +78,12 @@ const HLSPlayer = (props) => {
     const {activeSource} = props;
     const {setPlayer} = props;
 
-    const [currentTime, setCurrentTime] = React.useState(0);
+    // const RELOAD_COUNTDOWN = Math.ceil(30 + Math.random() * 20);
+    // const RELOAD_COUNTDOWN = Math.ceil(refreshInterval + Math.random() * 20);
+    const prevRefreshInterval = usePrevious(refreshInterval);
+    const isRefreshIntervalChanged = prevRefreshInterval !== refreshInterval;
+    const RELOAD_COUNTDOWN = getRandomCountdown(refreshInterval)
+    const [currentCountDown, setCurrentCountDown] = React.useState(RELOAD_COUNTDOWN);
     const [srcObject, setSrcObject] = React.useState({
         src: source.url,
         type,
@@ -75,25 +91,10 @@ const HLSPlayer = (props) => {
     })
     const [lastReloadTime, setLastReloadTime] = React.useState(Date.now());
 
-    const isActive = autoRefresh ? cctvIndex === currentIndexRef.current : true;
-    React.useEffect(() => {
-        return;
-        if(isActive) return;
-        const reloadTimer = setTimeout(() => {
-            console.log('#!isActive=', isActive, cctvIndex);
-            setLastReloadTime(Date.now());
-        // }, 3600000 + Math.random()*200000)
-        // }, 12000 + Math.random() * 200000)
-        }, 10000 );
-        return () => {
-            if(reloadTimer){
-                clearTimeout(reloadTimer);
-            }
-        }
-    }, [cctvIndex, isActive, lastReloadTime, autoRefresh])
+    // React.useLayoutEffect(() => {
+    //     setCurrentCountDown(RELOAD_COUNTDOWN);
+    // }, [RELOAD_COUNTDOWN])
 
-    console.log('&&&&', srcObject)
-    
     React.useEffect(() => {
         console.log('&&&& source changed:',source, lastReloadTime)
         const youtubeRegExp = /:\/\/www\.youtube\./;
@@ -153,7 +154,7 @@ const HLSPlayer = (props) => {
         if(autoRefresh === true){
             setPlayer(cctvIndex, player);
         } else {
-            setPlayer(20, player);
+            setPlayer(20, player, playerNum);
         }
         player.muted(true);
         const qualityLevels = player.qualityLevels();
@@ -176,7 +177,7 @@ const HLSPlayer = (props) => {
         // return () => {
         //   clearInterval(timer);
         // }
-    }, [autoRefresh, cctvIndex, channelLog, setPlayer, source.url]);
+    }, [autoRefresh, cctvIndex, channelLog, playerNum, setPlayer, source.url]);
     // const onPlayerReady = player => {
     //     channelLog.info("Player is ready");
     //     setPlayer(player);
@@ -274,32 +275,42 @@ const HLSPlayer = (props) => {
     }
 
     React.useEffect(() => {
+      if(refreshMode !== 'auto'){
+        return;
+      }
+      if(isRefreshIntervalChanged){
+        setCurrentCountDown(getRandomCountdown(refreshInterval))
+      }
       const timer = setInterval(() => {
         if(player === null) {
           clearInterval(timer);
           return;
         }
         console.log('current time=', cctvIndex, player);
-        setCurrentTime(player.currentTime());
-      },2000)
+        setCurrentCountDown(currentCountDown => {
+            return currentCountDown - CHECK_INTERNAL_SEC;
+        })
+      }, CHECK_INTERNAL_SEC * 1000)
       return () => {
         clearInterval(timer);
       }
-    }, [cctvIndex, lastReloadTime, player])
+    }, [cctvIndex, lastReloadTime, player, refreshMode, isRefreshIntervalChanged, refreshInterval])
 
-    let RELOAD_COUNTDOWN = 0;
     if(autoRefresh) {
-      const RELOAD_INTERVAL_SEC = 30;
-      RELOAD_COUNTDOWN = Math.ceil(RELOAD_INTERVAL_SEC - currentTime);
-      if(RELOAD_COUNTDOWN <= 0){
+      const countdown = Math.ceil(currentCountDown);
+      console.log('####', countdown)
+      if(countdown <= 0){
         setLastReloadTime(Date.now());
-        setCurrentTime(0);
+        setCurrentCountDown(RELOAD_COUNTDOWN);
       }
     }
 
     return (
       <Container>
-        <NumDisplay>{RELOAD_COUNTDOWN}</NumDisplay>
+        <NumDisplay position={'topLeft'}>{currentCountDown}</NumDisplay>
+        <NumDisplay position={'topRight'}>{currentCountDown}</NumDisplay>
+        <NumDisplay position={'bottomLeft'}>{currentCountDown}</NumDisplay>
+        <NumDisplay position={'bottomRight'}>{currentCountDown}</NumDisplay>
         <VideoPlayer
             controls={controls}
             src={srcObject}
@@ -341,4 +352,3 @@ const HLSPlayer = (props) => {
 };
 
 export default React.memo(HLSPlayer);
-// export default HLSPlayer

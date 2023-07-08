@@ -27,7 +27,9 @@ const GridVideos = props => {
         currentActiveIndex,
         cctvPlayersRef,
         cctvLastLoadedTime,
-        reloadPlayerComponent
+        reloadPlayerComponent,
+        refreshMode,
+        refreshInterval
     } = props;
 
     // const cctvs = [...cctvsInAreas.values()].flat();
@@ -84,6 +86,8 @@ const GridVideos = props => {
                             currentIndexRef={currentIndexRef}
                             autoRefresh={true}
                             lastLoaded={cctvLastLoadedTime[cctvIndex]}
+                            refreshMode={refreshMode}
+                            refreshInterval={refreshInterval}
                         ></HLSPlayer>
                     )}
                     </div>

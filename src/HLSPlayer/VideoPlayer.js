@@ -132,6 +132,18 @@ class VideoPlayer extends Component {
         };
         const hidePlaybackRates = props.hidePlaybackRates || props.hideControls.includes('playbackrates');
         if (!hidePlaybackRates) playerOptions.playbackRates = props.playbackRates;
+        playerOptions.techOrder = ["html5", "flash", "other supported tech"];
+        playerOptions.html5 = {
+            hls: {
+                enableWorker: true,
+                liveBackBufferLength: 15,
+                backBufferLength: 15,
+                liveMaxBackBufferLength: 15,
+                maxBufferSize: 0, 
+                maxBufferLength: 10,
+                liveSyncDurationCount: 1,
+            }
+        }
         return playerOptions;
     }
 
