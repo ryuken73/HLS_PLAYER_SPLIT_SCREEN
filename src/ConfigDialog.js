@@ -145,21 +145,25 @@ const ConfigDialog = props => {
 
     const onChangeMode = React.useCallback((event) => {
         if(event.target.checked){
-            setRefreshMode('auto')
+            setOptionsNSave('refreshMode', 'auto');
+            // setRefreshMode('auto')
         } else {
-            setRefreshMode('none')
+            setOptionsNSave('refreshMode', 'none');
+            // setRefreshMode('none')
         }
-    }, [setRefreshMode])
+    }, [setOptionsNSave])
 
     const onChangeInterval = React.useCallback((event) => {
         const interval = parseInt(event.target.value);
         // eslint-disable-next-line use-isnan
         if(isNaN(interval)){
-            setRefreshInterval(0);
+            setOptionsNSave('refreshInterval', 0);
+            // setRefreshInterval(0);
             return;
         }
-        setRefreshInterval(interval);
-    }, [setRefreshInterval])
+        setOptionsNSave('refreshInterval', interval);
+        // setRefreshInterval(interval);
+    }, [setOptionsNSave])
 
     const refreshInputDisabled = refreshMode !== 'auto'
 
@@ -223,6 +227,7 @@ const ConfigDialog = props => {
                         <Box display="flex" justifyContent="space-around">
                             {columnNames.map(columnName => (
                                 <Column
+                                    key={columnName}
                                     columnName={columnName}
                                     columnItems={columnItems[columnName]}
                                     moveAllCCTVs={moveAllCCTVs}

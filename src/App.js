@@ -27,7 +27,7 @@ function App() {
   const INITIAL_GRID_DIMENSION = savedOptions.gridDimension === undefined ? 2 : savedOptions.gridDimension;
   const INITIAL_AUTO_INTERVAL = savedOptions.autoInterval === undefined ? 10 : savedOptions.autoInterval;
   const INITIAL_REFRESH_MODE = savedOptions.refreshMode === undefined ? 'auto' : savedOptions.refreshMode;
-  const INITIAL_REFRESH_INTERVAL = savedOptions.refreshInterval === undefined ? 60 : savedOptions.refreshInterval
+  const INITIAL_REFRESH_INTERVAL = savedOptions.refreshInterval === undefined ? 1 : savedOptions.refreshInterval
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -227,6 +227,8 @@ function App() {
   const setOptionsNSave = React.useCallback((key, value) => {
     key === 'gridDimension' && setGridDimension(value);
     key === 'autoInterval' && setAutoInterval(value);
+    key === 'refreshMode' && setRefreshMode(value);
+    key === 'refreshInterval' && setRefreshInterval(value);
     const options = {
       ...savedOptions,
       [key]: value
