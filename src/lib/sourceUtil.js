@@ -33,12 +33,15 @@ export const mirrorModalPlayer = (playerNode, modalPlayer) => {
   try {
     const videoElement =  playerNode.querySelector('video');
     console.log('### videoElement:', videoElement, modalPlayer);
+    // console.log('2-1s. start captureStream')
     const mediaStream = videoElement.captureStream();
     const modalVideoPlayer = modalPlayer.tech().el();
     modalVideoPlayer.srcObject = null;
     modalVideoPlayer.srcObject = mediaStream;
+    // console.log('2-1e. start-end set srcObject(captured stream)')
     return true;
   } catch (err) {
+    // console.log('2-1e. start-err captureStream:', err)
     console.error(err);
     return false;
   }
