@@ -68,6 +68,8 @@ const GridVideos = props => {
                             setPlayer={setCCTVPlayerRef}
                             lastLoaded={cctvLastLoadedTime[cctvIndex]}
                             reloadPlayerComponent={reloadPlayerComponent}
+                            refreshMode={refreshMode}
+                            refreshInterval={refreshInterval}
                         ></MP4Player>
                     ):(
                         <HLSPlayer 

@@ -13,6 +13,7 @@ const Container = styled.div`
   position: relative;
 `
 const NumDisplay = styled.div`
+  display: ${props => !props.show && 'none'};
   position: absolute;
   top: ${props => (props.position === 'topLeft' || props.position === 'topRight') && '10px'};
   bottom: ${props => (props.position === 'bottomLeft' || props.position === 'bottomRight') && '10px'};
@@ -307,10 +308,10 @@ const HLSPlayer = (props) => {
 
     return (
       <Container>
-        <NumDisplay position={'topLeft'}>{currentCountDown}</NumDisplay>
-        <NumDisplay position={'topRight'}>{currentCountDown}</NumDisplay>
-        <NumDisplay position={'bottomLeft'}>{currentCountDown}</NumDisplay>
-        <NumDisplay position={'bottomRight'}>{currentCountDown}</NumDisplay>
+        <NumDisplay show={autoRefresh} position={'topLeft'}>{currentCountDown}</NumDisplay>
+        <NumDisplay show={autoRefresh} position={'topRight'}>{currentCountDown}</NumDisplay>
+        <NumDisplay show={autoRefresh} position={'bottomLeft'}>{currentCountDown}</NumDisplay>
+        <NumDisplay show={autoRefresh} position={'bottomRight'}>{currentCountDown}</NumDisplay>
         <VideoPlayer
             controls={controls}
             src={srcObject}

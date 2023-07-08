@@ -252,6 +252,7 @@ function App() {
             cctvLastLoadedTime={cctvLastLoadedTime}
             refreshMode={refreshMode}
             refreshInterval={refreshInterval}
+            reloadPlayerComponent={reloadPlayerComponent}
           ></GridVideos>
           <ModalBox 
             open={modalOpen} 
