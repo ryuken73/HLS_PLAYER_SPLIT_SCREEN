@@ -92,6 +92,7 @@ const HLSPlayer = (props) => {
     })
     const [lastReloadTime, setLastReloadTime] = React.useState(Date.now());
 
+    const isActive = !autoRefresh ? true : cctvIndex === currentIndexRef.current;
     // React.useLayoutEffect(() => {
     //     setCurrentCountDown(RELOAD_COUNTDOWN);
     // }, [RELOAD_COUNTDOWN])
@@ -301,11 +302,16 @@ const HLSPlayer = (props) => {
       const countdown = Math.ceil(currentCountDown);
       console.log('####', countdown)
       if(countdown <= 0){
+        if(isActive){
+            //if active bypass reload
+            setCurrentCountDown(RELOAD_COUNTDOWN);
+            return;
+        }
+        // player.dispose();
         setLastReloadTime(Date.now());
         setCurrentCountDown(RELOAD_COUNTDOWN);
       }
     }
-
     return (
       <Container>
         <NumDisplay show={autoRefresh} position={'topLeft'}>{currentCountDown}</NumDisplay>
