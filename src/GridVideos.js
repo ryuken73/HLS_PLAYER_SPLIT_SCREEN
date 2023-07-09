@@ -5,6 +5,7 @@ import HLSPlayer from './HLSPlayer';
 import MP4Player from './MP4Player';
 import Box from '@mui/material/Box';
 import styled from 'styled-components';
+import HLSJSPlayer from './HLSJSPlayer';
 
 const Container = styled.div`
     height: 100%;
@@ -73,7 +74,8 @@ const GridVideos = props => {
                             overlayContent={cctv.title}
                         ></MP4Player>
                     ):(
-                        <HLSPlayer 
+                        // <HLSPlayer 
+                        <HLSJSPlayer
                             player={cctvPlayersRef.current[cctvIndex]}
                             width={350}
                             height={200}
@@ -91,7 +93,9 @@ const GridVideos = props => {
                             lastLoaded={cctvLastLoadedTime[cctvIndex]}
                             refreshMode={refreshMode}
                             refreshInterval={refreshInterval}
-                        ></HLSPlayer>
+                        >
+                        </HLSJSPlayer>
+                        // ></HLSPlayer>
                     )}
                     </div>
                 </Box>
