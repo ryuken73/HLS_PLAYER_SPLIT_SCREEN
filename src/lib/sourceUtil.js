@@ -47,6 +47,26 @@ export const mirrorModalPlayer = (playerNode, modalPlayer) => {
   }
 }
 
+export const mirrorModalPlayerMP4 = (playerNode, modalPlayer, mediaStreamRef) => {
+  try {
+    const videoElement =  playerNode.querySelector('video');
+    console.log('### videoElement:', videoElement, modalPlayer);
+    // console.log('2-1s. start captureStream')
+    mediaStreamRef.current = null;
+    const mediaStream = videoElement.captureStream();
+    const modalVideoPlayer = modalPlayer;
+    modalVideoPlayer.srcObject = null;
+    modalVideoPlayer.srcObject = mediaStream;
+    mediaStreamRef.current = mediaStream;
+    // console.log('2-1e. start-end set srcObject(captured stream)')
+    return true;
+  } catch (err) {
+    // console.log('2-1e. start-err captureStream:', err)
+    console.error(err);
+    return false;
+  }
+}
+
 export const getRealIndex = (cctvIndex, gridDimension, realSelectedArray) => {
   const totalGridNum = gridDimension * gridDimension;
   const safeMaxIndex = Math.min(totalGridNum, realSelectedArray.length);

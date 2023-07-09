@@ -70,6 +70,7 @@ const GridVideos = props => {
                             reloadPlayerComponent={reloadPlayerComponent}
                             refreshMode={refreshMode}
                             refreshInterval={refreshInterval}
+                            overlayContent={cctv.title}
                         ></MP4Player>
                     ):(
                         <HLSPlayer 

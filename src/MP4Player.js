@@ -1,12 +1,36 @@
 import React from 'react'
 import styled from 'styled-components';
+// import Overlay from './Overlay';
 import usePrevious from './hooks/usePrevious';
 
 const Container = styled.div`
   overflow: hidden;
   width: 100%;
-  height: 100%;
+  height: ${props => !props.isModalPlayer && '100%'};
+  aspect-ratio: ${props => props.isModalPlayer && '16/9'};
   position: relative;
+  background-color: black;
+`
+const Overlay = styled.div`
+  display: ${props => !props.show && 'none'};
+  position: absolute;
+  bottom: 100px;
+  right: 5px;
+  font-size: ${props => props.big ? '3vw':'1.5vw'};
+  font-weight: bold;
+  opacity: 0.6;
+  border: 3px solid darkviolet;
+  border-radius: 10px;
+  background: darkblue;
+  color: white;
+  z-index: 1000;
+  padding: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
+  text-align: center;
+  line-height: 1;
+  word-break: initial;
+  font-family: Arial, Helvetica, sans-serif;
 `
 const NumDisplay = styled.div`
   display: ${props => !props.show && 'none'};
@@ -41,7 +65,9 @@ const MP4Player = (props) => {
       lastLoaded,
       refreshMode,
       refreshInterval,
-      reloadPlayerComponent
+      reloadPlayerComponent,
+      playerNum,
+      overlayContent
     } = props;
     const prevRefreshInterval = usePrevious(refreshInterval);
     const isRefreshIntervalChanged = prevRefreshInterval !== refreshInterval;
@@ -110,8 +136,10 @@ const MP4Player = (props) => {
       if(!isNaN(videoRef.current.duration)){
           videoRef.current.play();
       }
-      setPlayer(cctvIndex, videoRef.current)
-    }, [cctvIndex, lastLoaded, setPlayer]);
+      if(autoRefresh === true){
+          setPlayer(cctvIndex, videoRef.current);
+      }
+    }, [autoRefresh, cctvIndex, lastLoaded, setPlayer]);
 
     React.useEffect(() => {
       if(videoRef.current === null){
@@ -127,13 +155,22 @@ const MP4Player = (props) => {
       }
     }, [handleLoadedMetadata]) 
 
+    React.useLayoutEffect(() => {
+      if(autoRefresh === false){
+          setPlayer(20, videoRef.current, playerNum);
+      }
+    }, [autoRefresh, playerNum, setPlayer])
+
+  const isModalPlayer = playerNum !== undefined ;
+  const big = isModalPlayer;
   return (
-    <Container>
+    <Container isModalPlayer={isModalPlayer}>
       <NumDisplay show={autoRefresh} position={'topLeft'}>{currentCountDown}</NumDisplay>
       <NumDisplay show={autoRefresh} position={'topRight'}>{currentCountDown}</NumDisplay>
       <NumDisplay show={autoRefresh} position={'bottomLeft'}>{currentCountDown}</NumDisplay>
       <NumDisplay show={autoRefresh} position={'bottomRight'}>{currentCountDown}</NumDisplay>
       <CustomVideo muted ref={videoRef} src={url} crossOrigin="anonymous"></CustomVideo>
+      <Overlay big={big} show={true}>{overlayContent}</Overlay>
     </Container>
   )
 }

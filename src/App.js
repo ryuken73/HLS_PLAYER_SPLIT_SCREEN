@@ -12,9 +12,15 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import useLocalStorage from './hooks/useLocalStorage';
 // import useAutoPlay from './hooks/useAutoPlay';
 import SwiperControl from './SwiperControl';
-import { getRealIndex, mirrorModalPlayer, getNonPausedPlayerIndex } from './lib/sourceUtil';
+import { 
+  getRealIndex, 
+  mirrorModalPlayer, 
+  mirrorModalPlayerMP4, 
+  getNonPausedPlayerIndex 
+} from './lib/sourceUtil';
 import { replace } from './lib/arrayUtil';
 import "swiper/css";
+import MP4Player from './MP4Player';
  
 const KEY_OPTIONS = 'hlsCCTVOptions';
 const KEY_SELECT_SAVED = 'selectedSavedCCTVs';
@@ -47,6 +53,7 @@ function App() {
   const [refreshInterval, setRefreshInterval] = React.useState(INITIAL_REFRESH_INTERVAL);
   const [swiper, setSwiper] = React.useState(null);
   const modalPlayerNumRef = React.useRef(0);
+  const mediaStreamRef = React.useRef(null);
 
   useHotkeys('c', () => setDialogOpen(true));
   const cctvIndexRef = React.useRef(0);
@@ -102,7 +109,8 @@ function App() {
     const modalPlayer = getNextPlayer();
     console.log('!!!', modalOpenRef.current, preloadElement, modalPlayer);
     console.log('2s. start mirrorModalPlayer')
-    const ret = mirrorModalPlayer(preloadElement, modalPlayer);
+    // const ret = mirrorModalPlayer(preloadElement, modalPlayer);
+    const ret = mirrorModalPlayerMP4(preloadElement, modalPlayer, mediaStreamRef);
     console.log('2e. start-end mirrorModalPlayer ret=', ret);
     if(!ret) return false;
     setEnableOverlayModal(enableOverlayGlobal);
@@ -130,7 +138,9 @@ function App() {
     if(!ret) return false;
     if(modalOpen){
       console.log('start slide next!')
-      swiper.slideNext();
+      setTimeout(() => {
+        swiper.slideNext();
+      },200)
     } else {
       console.log('start slide to 0')
       // swiper.slideTo(0);
@@ -278,7 +288,14 @@ function App() {
               />
               {modalPlayers.map((player, index) => (
                 <SwiperSlide key={index}>
-                  <HLSPlayer 
+                  <MP4Player
+                    setPlayer={initModalPlayersIndex}
+                    playerNum={index}
+                    autoRefresh={false}
+                    overlayContent={overlayContentModal[index]}
+                  >
+                  </MP4Player>
+                  {/* <HLSPlayer 
                     fill={true}
                     responsive={true}
                     setPlayer={initModalPlayersIndex}
@@ -289,7 +306,7 @@ function App() {
                     overlayModal={true}
                     playerNum={index}
                     autoRefresh={false}
-                  ></HLSPlayer>
+                  ></HLSPlayer> */}
                 </SwiperSlide>
               ))}
             </Swiper>
