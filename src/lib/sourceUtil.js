@@ -47,12 +47,24 @@ export const mirrorModalPlayer = (playerNode, modalPlayer) => {
   }
 }
 
+const stopStream = stream => {
+  try {
+    console.log('stopStream:', stream);
+    stream.getTracks().forEach((track) => track.stop());
+    return true
+  } catch(err) {
+    console.error('error stopStream:', err);
+    return false;
+  }
+}
+
 export const mirrorModalPlayerMP4 = (playerNode, modalPlayer, mediaStreamRef) => {
   try {
     const videoElement =  playerNode.querySelector('video');
     console.log('### videoElement:', videoElement, modalPlayer);
     // console.log('2-1s. start captureStream')
-    mediaStreamRef.current = null;
+    // mediaStreamRef.current = null;
+    stopStream(mediaStreamRef.current);
     const mediaStream = videoElement.captureStream();
     const modalVideoPlayer = modalPlayer;
     modalVideoPlayer.srcObject = null;
