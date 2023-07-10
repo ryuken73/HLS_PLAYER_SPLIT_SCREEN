@@ -28,12 +28,13 @@ const CustomPlayer = styled(ReactHlsPlayer)`
 `
 
 const hlsConfig = {
-  enableWorker: true,
+  enableWorker: false,
+  debug: false,
   backBufferLength: 0,
   liveBackBufferLength: 0,
   liveMaxBackBufferLength: 0,
-  maxBufferSize: 0,
-  maxBufferLength: 5,
+  maxBufferSize: 10,
+  maxBufferLength: 10,
 }
 
 const CHECK_INTERNAL_SEC = 2;
