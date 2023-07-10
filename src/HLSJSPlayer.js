@@ -10,6 +10,13 @@ const Conatiner = styled.div`
   height: 100%;
   background-color: black;
 `;
+const Cover = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: maroon;
+  display: ${props => !props.autoPlay && 'none'};
+`
 const NumDisplay = styled.div`
   display: ${props => !props.show && 'none'};
   position: absolute;
@@ -45,6 +52,7 @@ const getRandomCountdown = refreshInterval => {
 
 function HLSJSPlayer(props) {
   const {
+    autoPlay,
     player=null,
     source,
     setPlayer,
@@ -138,6 +146,7 @@ function HLSJSPlayer(props) {
 
   return (
     <Conatiner>
+      <Cover autoPlay={autoPlay}></Cover>
       <NumDisplay show={autoRefresh} position={'topLeft'}>{currentCountDown}</NumDisplay>
       <NumDisplay show={autoRefresh} position={'topRight'}>{currentCountDown}</NumDisplay>
       <NumDisplay show={autoRefresh} position={'bottomLeft'}>{currentCountDown}</NumDisplay>
