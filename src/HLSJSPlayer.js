@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ReactHlsPlayer from 'react-hls-player/dist';
 import usePrevious from './hooks/usePrevious';
+import {isPlayerPlaying} from './lib/sourceUtil';
 
 const Conatiner = styled.div`
   position: relative;
@@ -14,7 +15,8 @@ const Cover = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: maroon;
+  /* background-color: maroon; */
+  background-color: ${props => props.isActive ? 'red': props.paused ? 'black' : 'maroon'};
   display: ${props => !props.autoPlay && 'none'};
 `
 const NumDisplay = styled.div`
@@ -24,9 +26,13 @@ const NumDisplay = styled.div`
   bottom: ${props => (props.position === 'bottomLeft' || props.position === 'bottomRight') && '10px'};
   left: ${props => (props.position === 'topLeft' || props.position === 'bottomLeft') && '10px'};
   right: ${props => (props.position === 'topRight' || props.position === 'bottomRight') && '10px'};
+  /* background: ${props => props.isActive ? 'darkblue' : 'black'}; */
   background: black;
   width: 80px;
+  padding: 5px;
   z-index: 1000;
+  line-height:1em; 
+  vertical-align:top;
 `
 const CustomPlayer = styled(ReactHlsPlayer)`
   width: 100%;
@@ -41,7 +47,7 @@ const hlsConfig = {
   liveBackBufferLength: 0,
   liveMaxBackBufferLength: 0,
   maxBufferSize: 10,
-  maxBufferLength: 10,
+  maxBufferLength: 10 * 1000 * 1000,
 }
 
 const CHECK_INTERNAL_SEC = 2;
@@ -62,7 +68,7 @@ function HLSJSPlayer(props) {
     autoRefresh,
     refreshMode,
     refreshInterval,
-    reloadPlayerComponent
+    currentCCTVIndex
   } = props;
   const playerRef = React.useRef(null);
   const {url} = source
@@ -73,11 +79,17 @@ function HLSJSPlayer(props) {
   const [currentCountDown, setCurrentCountDown] = React.useState(RELOAD_COUNTDOWN);
   const [lastReloadTime, setLastReloadTime] = React.useState(Date.now());
   const [src, setSrc] = React.useState(url);
-  const isActive = !autoRefresh ? true : cctvIndex === currentIndexRef.current;
+  // const isActive = !autoRefresh ? true : cctvIndex === currentIndexRef.current;
+  const isActive = !autoRefresh ? true : cctvIndex === currentCCTVIndex;
 
   const onLoadDataHandler = React.useCallback((event) => {
     console.log('^^^',event)
     event.target.play(); 
+  }, [])
+
+  React.useEffect(() => {
+    console.log('HLSJS Player mount')
+    return () => console.log('HLSJS Player umount')
   }, [])
 
   // React.useLayoutEffect(() => {
@@ -143,14 +155,17 @@ function HLSJSPlayer(props) {
       })
     }
   }
+  const paused = !isPlayerPlaying(playerRef.current);
+
+  const numDisplayContent = refreshMode === 'auto' ? refreshInterval : 0;
 
   return (
     <Conatiner>
-      <Cover autoPlay={autoPlay}></Cover>
-      <NumDisplay show={autoRefresh} position={'topLeft'}>{currentCountDown}</NumDisplay>
-      <NumDisplay show={autoRefresh} position={'topRight'}>{currentCountDown}</NumDisplay>
-      <NumDisplay show={autoRefresh} position={'bottomLeft'}>{currentCountDown}</NumDisplay>
-      <NumDisplay show={autoRefresh} position={'bottomRight'}>{currentCountDown}</NumDisplay>
+      <Cover isActive={isActive} paused={paused} autoPlay={autoPlay}></Cover>
+      <NumDisplay isActive={isActive} show={autoRefresh} position={'topLeft'}>{numDisplayContent}</NumDisplay>
+      <NumDisplay isActive={isActive} show={autoRefresh} position={'topRight'}>{numDisplayContent}</NumDisplay>
+      <NumDisplay isActive={isActive} show={autoRefresh} position={'bottomLeft'}>{numDisplayContent}</NumDisplay>
+      <NumDisplay isActive={isActive} show={autoRefresh} position={'bottomRight'}>{numDisplayContent}</NumDisplay>
       <CustomPlayer
         src={src}
         autoPlay={true}

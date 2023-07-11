@@ -30,7 +30,8 @@ const GridVideos = props => {
         cctvLastLoadedTime,
         reloadPlayerComponent,
         refreshMode,
-        refreshInterval
+        refreshInterval,
+        currentCCTVIndex
     } = props;
 
     // const cctvs = [...cctvsInAreas.values()].flat();
@@ -90,6 +91,7 @@ const GridVideos = props => {
                             overlayContent={cctv.title}
                             cctvIndex={cctvIndex}
                             currentIndexRef={currentIndexRef}
+                            currentCCTVIndex={currentCCTVIndex}
                             autoRefresh={true}
                             lastLoaded={cctvLastLoadedTime[cctvIndex]}
                             refreshMode={refreshMode}

@@ -103,7 +103,7 @@ export const getYoutubePlaylistUrl = videoId => {
     })
 }
 
-const isPlayerPlaying = (player) => {
+export const isPlayerPlaying = (player) => {
     try {
         const ended = typeof(player.ended) === 'function' ? player.ended() : player.ended;
         const paused = typeof(player.paused) === 'function' ? player.paused() : player.paused;
