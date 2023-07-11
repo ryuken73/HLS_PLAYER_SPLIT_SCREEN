@@ -157,7 +157,7 @@ function HLSJSPlayer(props) {
   }
   const paused = !isPlayerPlaying(playerRef.current);
 
-  const numDisplayContent = refreshMode === 'auto' ? refreshInterval : 0;
+  const numDisplayContent = refreshMode === 'auto' ? currentCountDown : 0;
 
   return (
     <Conatiner>
