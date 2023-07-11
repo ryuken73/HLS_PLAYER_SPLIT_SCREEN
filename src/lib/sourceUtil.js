@@ -63,8 +63,8 @@ export const mirrorModalPlayerMP4 = (playerNode, modalPlayer, mediaStreamRef) =>
     const videoElement =  playerNode.querySelector('video');
     console.log('### videoElement:', videoElement, modalPlayer);
     // console.log('2-1s. start captureStream')
-    // mediaStreamRef.current = null;
-    stopStream(mediaStreamRef.current);
+    mediaStreamRef.current = null;
+    // stopStream(mediaStreamRef.current);
     const mediaStream = videoElement.captureStream();
     const modalVideoPlayer = modalPlayer;
     modalVideoPlayer.srcObject = null;
