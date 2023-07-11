@@ -280,7 +280,7 @@ function App() {
           >
             <Swiper 
               loop={true} 
-              speed={1000}
+              speed={1500}
               // effect="fade"
               // modules={[EffectFade]}
             >
