@@ -79,7 +79,8 @@ function HLSJSPlayer(props) {
   const RELOAD_COUNTDOWN = getRandomCountdown(refreshInterval)
   const [currentCountDown, setCurrentCountDown] = React.useState(RELOAD_COUNTDOWN);
   // const [lastReloadTime, setLastReloadTime] = React.useState(Date.now());
-  const [src, setSrc] = React.useState(url);
+  // const [src, setSrc] = React.useState(url);
+  const [reloadTrigger, setReloadTrigger] = React.useState(true);
   // const isActive = !autoRefresh ? true : cctvIndex === currentIndexRef.current;
   const isActive = !autoRefresh ? true : cctvIndex === currentCCTVIndex;
 
@@ -135,16 +136,16 @@ function HLSJSPlayer(props) {
     }
   }, [cctvIndex, player, refreshMode, isRefreshIntervalChanged, refreshInterval])
 
-  React.useEffect(() => {
-    console.log('player stalled. reload player:',lastLoaded,cctvIndex)
-    setSrc(src => {
-      const prevSrc = src;
-      setTimeout(() => {
-        setSrc(prevSrc)
-      },200);
-      return null;
+  const reloadPlayer = React.useCallback(() => {
+    setReloadTrigger(reloadTrigger => {
+      return !reloadTrigger;
     })
-  }, [cctvIndex, lastLoaded])
+  }, [])
+
+  React.useEffect(() => {
+    console.log('lastLoaded: ', lastLoaded);
+    reloadPlayer();
+  }, [lastLoaded, reloadPlayer])
 
   if(autoRefresh) {
     const countdown = Math.ceil(currentCountDown);
@@ -155,33 +156,25 @@ function HLSJSPlayer(props) {
           setCurrentCountDown(RELOAD_COUNTDOWN);
           return;
       }
-      // player.dispose();
-      // setLastReloadTime(Date.now());
       setCurrentCountDown(RELOAD_COUNTDOWN);
-      setSrc(src => {
-        const prevSrc = src;
-        setTimeout(() => {
-          setSrc(prevSrc)
-        },200);
-        return 'https://a.b.c.d';
-      })
+      reloadPlayer();
     }
   }
   const paused = !isPlayerPlaying(playerRef.current, cctvIndex, 'apply paused style');
-
   const lastLoadedString = (new Date(lastLoaded)).toLocaleString();
   const numDisplayContent = refreshMode === 'auto' ? currentCountDown : lastLoadedString;
+
 
   return (
     <Conatiner>
       <Cover isActive={isActive} paused={paused} autoPlay={autoPlay}></Cover>
-      <NumDisplay isActive={isActive} show={autoRefresh} position={'topLeft'}>{numDisplayContent}</NumDisplay>
+      <NumDisplay onClick={reloadPlayer} isActive={isActive} show={autoRefresh} position={'topLeft'}>{numDisplayContent}</NumDisplay>
       <NumDisplay isActive={isActive} show={autoRefresh} position={'topRight'}>{numDisplayContent}</NumDisplay>
       <NumDisplay isActive={isActive} show={autoRefresh} position={'bottomLeft'}>{numDisplayContent}</NumDisplay>
       <NumDisplay isActive={isActive} show={autoRefresh} position={'bottomRight'}>{numDisplayContent}</NumDisplay>
       <CustomPlayer
-        src={src}
-        autoPlay={true}
+        src={url}
+        autoPlay={reloadTrigger}
         controls={false}
         playerRef={playerRef}
         hlsConfig={hlsConfig}
