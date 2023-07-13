@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSwiper } from 'swiper/react';
 
-function SlderControl(props) {
-  const {setSwiper, children} = props;
+function SliderControl(props) {
+  const {swiperRef, children} = props;
   const swiper = useSwiper();
-  setSwiper(swiper);
+  swiperRef.current = swiper;
   return (
     <div>{children}</div>
   )
 }
 
-export default React.memo(SlderControl);
+export default React.memo(SliderControl);

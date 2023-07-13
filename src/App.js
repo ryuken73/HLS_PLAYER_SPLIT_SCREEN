@@ -52,7 +52,7 @@ function App() {
   const [cctvLastLoadedTime, setLastLoadedTime] = React.useState(INITIAL_LOAD_TIME);
   const [refreshMode, setRefreshMode] = React.useState(INITIAL_REFRESH_MODE);
   const [refreshInterval, setRefreshInterval] = React.useState(INITIAL_REFRESH_INTERVAL);
-  const [swiper, setSwiper] = React.useState(null);
+  // const [swiper, setSwiper] = React.useState(null);
   const modalPlayerNumRef = React.useRef(0);
   const mediaStreamRef = React.useRef(null);
 
@@ -64,6 +64,7 @@ function App() {
   const modalOpenRef = React.useRef(modalOpen);
   const gridNumNormalized = getRealIndex(currentCCTVIndex, gridDimension, cctvsSelectedArray)
   const cctvPlayersRef = React.useRef([]);
+  const swiperRef = React.useRef(null);
 
   console.log('gridNumNormalized=', gridNumNormalized, currentCCTVIndex, cctvIndexRef.current)
 
@@ -132,7 +133,10 @@ function App() {
     const {gridNum, cctvIndex} = targetIndex;
     const targetCCTVIndex = cctvIndex === undefined ? gridNum2CCTVIndex(gridNum) : cctvIndex;
     const modalOpen = modalOpenRef.current;
-    if(swiper.animating){
+    if(swiperRef.current === null){
+      return;
+    }
+    if(swiperRef.current.animating){
       return;
     }
     const ret = maximizeGrid(targetCCTVIndex);
@@ -140,18 +144,18 @@ function App() {
     if(modalOpen){
       console.log('start slide next!')
       setTimeout(() => {
-        swiper.slideNext();
+        swiperRef.current.slideNext();
       },200)
     } else {
       console.log('start slide to 0')
       // swiper.slideTo(0);
-      swiper.slideToLoop(0);
+      swiperRef.current.slideToLoop(0);
       setModalOpen(true);
       modalOpenRef.current = true;
     }
-    console.log('!!!!current modalOpen = ', modalOpen, swiper.activeIndex, swiper.realIndex)
+    console.log('!!!!current modalOpen = ', modalOpen, swiperRef.current.activeIndex, swiperRef.current.realIndex)
     return true;
-  }, [gridNum2CCTVIndex, maximizeGrid, swiper])
+  }, [gridNum2CCTVIndex, maximizeGrid, swiperRef])
 
   useHotkeys('1', () => safeSlide({gridNum: '0'}), [safeSlide])
   useHotkeys('2', () => safeSlide({gridNum: '1'}), [safeSlide])
@@ -289,7 +293,7 @@ function App() {
               // modules={[EffectFade]}
             >
               <SwiperControl 
-                setSwiper={setSwiper}
+                swiperRef={swiperRef}
               />
               {modalPlayers.map((player, index) => (
                 <SwiperSlide key={index}>
