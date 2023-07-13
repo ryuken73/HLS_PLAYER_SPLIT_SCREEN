@@ -31,8 +31,9 @@ const NumDisplay = styled.div`
   width: 80px;
   padding: 5px;
   z-index: 1000;
-  line-height:1em; 
+  /* line-height:3em;  */
   vertical-align:top;
+  font-size: 5px;
 `
 const CustomPlayer = styled(ReactHlsPlayer)`
   width: 100%;
@@ -162,13 +163,14 @@ function HLSJSPlayer(props) {
         setTimeout(() => {
           setSrc(prevSrc)
         },200);
-        return null;
+        return 'https://a.b.c.d';
       })
     }
   }
   const paused = !isPlayerPlaying(playerRef.current, cctvIndex, 'apply paused style');
 
-  const numDisplayContent = refreshMode === 'auto' ? currentCountDown : 0;
+  const lastLoadedString = (new Date(lastLoaded)).toLocaleString();
+  const numDisplayContent = refreshMode === 'auto' ? currentCountDown : lastLoadedString;
 
   return (
     <Conatiner>

@@ -25,6 +25,7 @@ import MP4Player from './MP4Player';
 const KEY_OPTIONS = 'hlsCCTVOptions';
 const KEY_SELECT_SAVED = 'selectedSavedCCTVs';
 const KEY_NOT_SELECT_SAVED = 'notSelectedSavedCCTVs';
+const INITIAL_LOAD_TIME = (new Array(9)).fill(Date.now());
 
 function App() {
   const [savedOptions, saveOptions] = useLocalStorage(KEY_OPTIONS,{});
@@ -48,7 +49,7 @@ function App() {
   const [enableOverlayGlobal, setEnableOverlayGlobal] = React.useState(true);
   const [checkedCCTVId, setCheckedCCTVId] = React.useState('');
   const [currentCCTVIndex, setCurrentCCTVIndex] = React.useState(null);
-  const [cctvLastLoadedTime, setLastLoadedTime] = React.useState(new Array(9));
+  const [cctvLastLoadedTime, setLastLoadedTime] = React.useState(INITIAL_LOAD_TIME);
   const [refreshMode, setRefreshMode] = React.useState(INITIAL_REFRESH_MODE);
   const [refreshInterval, setRefreshInterval] = React.useState(INITIAL_REFRESH_INTERVAL);
   const [swiper, setSwiper] = React.useState(null);
