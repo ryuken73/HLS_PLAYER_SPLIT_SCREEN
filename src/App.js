@@ -48,7 +48,7 @@ function App() {
   const [enableOverlayGlobal, setEnableOverlayGlobal] = React.useState(true);
   const [checkedCCTVId, setCheckedCCTVId] = React.useState('');
   const [currentCCTVIndex, setCurrentCCTVIndex] = React.useState(null);
-  const [cctvLastLoadedTime, setLastLoadedTime] = React.useState([]);
+  const [cctvLastLoadedTime, setLastLoadedTime] = React.useState(new Array(9));
   const [refreshMode, setRefreshMode] = React.useState(INITIAL_REFRESH_MODE);
   const [refreshInterval, setRefreshInterval] = React.useState(INITIAL_REFRESH_INTERVAL);
   const [swiper, setSwiper] = React.useState(null);
