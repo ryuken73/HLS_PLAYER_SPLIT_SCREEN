@@ -77,7 +77,7 @@ function HLSJSPlayer(props) {
   const isRefreshIntervalChanged = prevRefreshInterval !== refreshInterval;
   const RELOAD_COUNTDOWN = getRandomCountdown(refreshInterval)
   const [currentCountDown, setCurrentCountDown] = React.useState(RELOAD_COUNTDOWN);
-  const [lastReloadTime, setLastReloadTime] = React.useState(Date.now());
+  // const [lastReloadTime, setLastReloadTime] = React.useState(Date.now());
   const [src, setSrc] = React.useState(url);
   // const isActive = !autoRefresh ? true : cctvIndex === currentIndexRef.current;
   const isActive = !autoRefresh ? true : cctvIndex === currentCCTVIndex;
@@ -133,6 +133,16 @@ function HLSJSPlayer(props) {
       clearInterval(timer);
     }
   }, [cctvIndex, player, refreshMode, isRefreshIntervalChanged, refreshInterval])
+
+  React.useEffect(() => {
+      setSrc(src => {
+        const prevSrc = src;
+        setTimeout(() => {
+          setSrc(prevSrc)
+        },200);
+        return null;
+      })
+  }, [lastLoaded])
 
   if(autoRefresh) {
     const countdown = Math.ceil(currentCountDown);
