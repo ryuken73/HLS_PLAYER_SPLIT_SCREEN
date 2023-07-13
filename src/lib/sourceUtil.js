@@ -103,7 +103,7 @@ export const getYoutubePlaylistUrl = videoId => {
     })
 }
 
-export const isPlayerPlaying = (player) => {
+export const isPlayerPlaying = (player, cctvIndex, checkType) => {
     try {
         const ended = typeof(player.ended) === 'function' ? player.ended() : player.ended;
         const paused = typeof(player.paused) === 'function' ? player.paused() : player.paused;
@@ -113,12 +113,16 @@ export const isPlayerPlaying = (player) => {
         console.log('getNon paused:', paused)
         console.log('getNon ended:', ended)
         console.log('getNon readyState:', readyState);
-        return (
+        const playing = (
             currentTime > 0 &&
             !paused &&
             !ended &&
             readyState > 2
         );
+        if(!playing) {
+          console.log('player is stalled:', cctvIndex, checkType);
+        }
+        return playing
     } catch (err) {
         console.error("errors in isPlayerPlaying:", err);
         console.error("return false to continue");
@@ -140,7 +144,7 @@ export const getNonPausedPlayerIndex = (nextPlayerIndex, cctvPlayersRef, reloadP
             continue;
         }
         // const paused = typeof(player.paused) === 'boolean' ? player.paused :player.paused();
-        const paused = !isPlayerPlaying(cctvPlayersRef.current[nextIndex]);
+        const paused = !isPlayerPlaying(cctvPlayersRef.current[nextIndex], nextIndex);
         console.log('2-X.getNonPausedPlayerIndex paused:', paused);
         // console.log('2-1.getNonPausedPlayerIndex isPlaying:', isPlaying);
         if(!paused){

@@ -135,14 +135,15 @@ function HLSJSPlayer(props) {
   }, [cctvIndex, player, refreshMode, isRefreshIntervalChanged, refreshInterval])
 
   React.useEffect(() => {
-      setSrc(src => {
-        const prevSrc = src;
-        setTimeout(() => {
-          setSrc(prevSrc)
-        },200);
-        return null;
-      })
-  }, [lastLoaded])
+    console.log('player stalled. reload player:',lastLoaded,cctvIndex)
+    setSrc(src => {
+      const prevSrc = src;
+      setTimeout(() => {
+        setSrc(prevSrc)
+      },200);
+      return null;
+    })
+  }, [cctvIndex, lastLoaded])
 
   if(autoRefresh) {
     const countdown = Math.ceil(currentCountDown);
@@ -165,7 +166,7 @@ function HLSJSPlayer(props) {
       })
     }
   }
-  const paused = !isPlayerPlaying(playerRef.current);
+  const paused = !isPlayerPlaying(playerRef.current, cctvIndex, 'apply paused style');
 
   const numDisplayContent = refreshMode === 'auto' ? currentCountDown : 0;
 
