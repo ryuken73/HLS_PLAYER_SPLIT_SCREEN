@@ -202,7 +202,10 @@ function App() {
       document.title="CCTV"
       clearInterval(autoplayTimer.current);
     }
-  }, [safeSlide, reloadPlayerComponent])
+    return () => {
+      clearInterval(autoplayTimer.current);
+    }
+  }, [safeSlide, reloadPlayerComponent, cctvIndexRef])
 
   const toggleAutoPlay = React.useCallback(() => {
     setAutoPlay(autoPlay => {
